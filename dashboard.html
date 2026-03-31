@@ -191,6 +191,9 @@
         .kpi-concluido  { border-color: #4CAF50; }
         .kpi-concluido .kpi-value { color: #388E3C; }
 
+        .kpi-finalizado { border-color: #1B5E20; }
+        .kpi-finalizado .kpi-value { color: #1B5E20; }
+
         .kpi-confirmado { border-color: #2196F3; }
         .kpi-confirmado .kpi-value { color: #1565C0; }
 
@@ -336,7 +339,7 @@
 
 <script>
 // DEGUSTAÇÕES — atualizado automaticamente pelo sincronizar_portal.py
-// Última sincronização: 31/03/2026 às 12:55
+// Última sincronização: 31/03/2026 às 15:11
 // NÃO EDITE MANUALMENTE ESTA SEÇÃO
 const TODAS_DEGUSTACOES = [
   {
@@ -553,14 +556,16 @@ function getFiltered() {
 
 function renderKPIs(dados) {
     const total      = dados.length;
-    const concluido  = dados.filter(d => d.status === 'Concluído' || d.status === 'Finalizado').length;
+    const concluido  = dados.filter(d => d.status === 'Concluído').length;
+    const finalizado = dados.filter(d => d.status === 'Finalizado').length;
     const confirmado = dados.filter(d => d.status === 'Confirmado').length;
     const agendado   = dados.filter(d => d.status === 'Agendado').length;
-    const pctConc    = total ? Math.round(100 * concluido / total) : 0;
+    const pctConc    = total ? Math.round(100 * (concluido + finalizado) / total) : 0;
 
     const kpis = [
         { cls: 'kpi-total',      label: 'Total',       value: total,      sub: 'degustações no período' },
-        { cls: 'kpi-concluido',  label: 'Concluídas',  value: concluido,  sub: `${pctConc}% do total` },
+        { cls: 'kpi-concluido',  label: 'Concluído',   value: concluido,  sub: 'realizado recentemente' },
+        { cls: 'kpi-finalizado', label: 'Finalizado',  value: finalizado, sub: `${pctConc}% do total realizados` },
         { cls: 'kpi-confirmado', label: 'Confirmadas', value: confirmado, sub: 'prontas para acontecer' },
         { cls: 'kpi-agendado',   label: 'Agendadas',   value: agendado,   sub: 'aguardando confirmação' },
     ];
