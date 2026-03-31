@@ -124,9 +124,20 @@
         }
 
         .legend h3 {
-            margin-bottom: 1.2rem;
+            margin-bottom: 0;
             font-size: 1.1rem;
             color: #1B5E20;
+        }
+
+        .legend-toggle {
+            padding: 1.5rem 2rem 0;
+            cursor: default;
+        }
+
+        .legend-arrow { display: none; }
+
+        .legend-body {
+            padding: 1.2rem 2rem 2rem;
         }
 
         .legend-items {
@@ -622,42 +633,164 @@
             opacity: 0.9;
         }
 
-        /* Responsive */
+        /* ── Responsive ─────────────────────────────────────────────────────── */
+
+        /* Previne zoom automático no iOS em inputs */
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 1.8rem;
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.7rem;
+                padding: 1rem 1.2rem;
             }
+
+            .header-subtitle { text-align: center; }
+
+            .hero {
+                padding: 2rem 1.2rem 1.5rem;
+            }
+
+            .hero h1 { font-size: 1.7rem; }
+            .hero p  { font-size: 0.95rem; margin-bottom: 1.2rem; }
 
             .hero-buttons {
                 flex-direction: column;
+                gap: 0.6rem;
             }
 
             .btn {
                 width: 100%;
+                padding: 0.9rem 1.2rem;
+                font-size: 1rem;
+            }
+
+            /* Legenda colapsável */
+            .legend {
+                margin: 0.8rem 0.8rem;
+                padding: 0;
+            }
+
+            .legend-toggle {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 1.2rem;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .legend-body {
+                display: none;
+                padding: 0 1.2rem 1rem;
+            }
+
+            .legend-body.open { display: block; }
+
+            .legend-items {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
+            }
+
+            /* Search */
+            .search-section {
+                margin: 0.8rem;
+                padding: 0.8rem 1rem;
+                border-radius: 8px;
+            }
+
+            /* Cards */
+            .container {
+                padding: 0 0.8rem;
+                margin: 0.8rem auto 5rem; /* bottom margin para FAB */
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
+
+            .card-title { font-size: 1.2rem; }
+
+            .card-info {
+                grid-template-columns: 1fr;
+                gap: 0.3rem;
+            }
+
+            /* Botões dos formulários — touch targets */
+            .card-buttons {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+
+            .form-btn {
+                padding: 0.75rem 0.3rem;
+                font-size: 0.85rem;
+                min-height: 44px;
+            }
+
+            .btn-qr {
+                padding: 0.7rem;
+                font-size: 0.85rem;
+                min-height: 44px;
+                margin: 0 1rem 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            /* FAB — Nova Degustação flutuante */
+            .fab {
+                display: flex !important;
+            }
+
+            /* Modais ocupam mais tela */
+            .modal-content {
+                width: 96%;
+                max-height: 92vh;
+                padding: 1.5rem 1.2rem;
+            }
+
+            #qrModal .modal-content {
+                max-width: 96%;
+            }
+
+            .qr-actions { gap: 0.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.4rem; }
 
             .card-buttons {
                 grid-template-columns: repeat(2, 1fr);
             }
-
-            header {
-                flex-direction: column;
-                text-align: center;
-                gap: 0.8rem;
-            }
-
-            .header-subtitle {
-                text-align: center;
-            }
-
-            .legend-items {
-                grid-template-columns: 1fr;
-            }
         }
+
+        /* FAB — oculto no desktop */
+        .fab {
+            display: none;
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 900;
+            background: #2E7D32;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.85rem 1.4rem;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            cursor: pointer;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .fab:active { transform: scale(0.96); }
 
         /* No results message */
         .no-results {
@@ -688,7 +821,11 @@
 
     <!-- Color Legend -->
     <section class="legend">
-        <h3>Guia de Formulários</h3>
+        <div class="legend-toggle" onclick="toggleLegend(this)">
+            <h3 style="margin:0">Guia de Formulários</h3>
+            <span class="legend-arrow">▼</span>
+        </div>
+        <div class="legend-body open">
         <div class="legend-items">
             <div class="legend-item">
                 <span class="legend-color color-green"></span>
@@ -715,7 +852,11 @@
                 <span><strong>Form 5:</strong> Relatório Geral (Responsável)</span>
             </div>
         </div>
+        </div>
     </section>
+
+    <!-- FAB mobile -->
+    <button class="fab" onclick="openModal()">+ Nova</button>
 
     <!-- Search Bar -->
     <section class="search-section">
@@ -1193,6 +1334,13 @@ const DEGUSTACOES = [
                     btn.disabled = false;
                 }
             });
+        }
+
+        function toggleLegend(toggleEl) {
+            const body = toggleEl.nextElementSibling;
+            const arrow = toggleEl.querySelector('.legend-arrow');
+            body.classList.toggle('open');
+            if (arrow) arrow.textContent = body.classList.contains('open') ? '▲' : '▼';
         }
 
         function openModal() {
