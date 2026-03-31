@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário 3B - Observações do Degustador | Supren Veg</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --dark-blue: #0D47A1;
+      --dark-blue-dark: #01237a;
+      --dark-blue-light: #BBDEFB;
+      --dark-blue-mid: #64B5F6;
+      --dark-green: #1B5E20;
+      --amber: #F9A825;
+      --text-dark: #212121;
+      --text-light: #666;
+      --border-light: #E0E0E0;
+      --error: #D32F2F;
+      --success: #388E3C;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-dark);
+      background-color: #F5F5F5;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: 'DM Serif Display', serif;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background-color: var(--dark-green);
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-bar .brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .top-bar .badge {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--dark-blue) 0%, var(--dark-blue-dark) 100%);
+      color: white;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 24px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    .meta-pill {
+      background-color: var(--dark-blue-light);
+      color: var(--dark-blue-dark);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Card Styling */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border-top: 4px solid var(--dark-blue);
+    }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      color: var(--dark-blue);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .card-subtitle {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+    }
+
+    /* Form Groups */
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-dark);
+      font-size: 15px;
+    }
+
+    label .required {
+      color: var(--error);
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text-dark);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="time"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--dark-blue);
+      box-shadow: 0 0 0 3px var(--dark-blue-light);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    input[type="text"]:invalid:not(:placeholder-shown),
+    input[type="date"]:invalid:not(:placeholder-shown),
+    input[type="time"]:invalid:not(:placeholder-shown),
+    input[type="number"]:invalid:not(:placeholder-shown) {
+      border-color: var(--error);
+    }
+
+    .hint {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    /* Radio Buttons */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+
+    .radio-option:hover {
+      background-color: var(--dark-blue-light);
+    }
+
+    .radio-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--dark-blue);
+    }
+
+    .radio-option label {
+      margin: 0;
+      cursor: pointer;
+      font-weight: 400;
+    }
+
+    /* Conditional Fields */
+    .conditional {
+      display: none;
+      margin-top: 12px;
+      padding: 16px;
+      background-color: #F5F5F5;
+      border-left: 4px solid var(--dark-blue);
+      border-radius: 6px;
+    }
+
+    /* Table Layout for Products */
+    .products-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .products-table th {
+      background-color: var(--dark-blue-light);
+      color: var(--dark-blue);
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid var(--dark-blue);
+    }
+
+    .products-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .products-table tr:hover {
+      background-color: #F9F9F9;
+    }
+
+    .products-table input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 14px;
+    }
+
+    .product-name {
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    /* Star Rating */
+    .star-rating {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+
+    .star {
+      font-size: 32px;
+      cursor: pointer;
+      color: #ddd;
+      transition: color 0.2s, transform 0.2s;
+      user-select: none;
+    }
+
+    .star:hover,
+    .star.on {
+      color: var(--amber);
+      transform: scale(1.1);
+    }
+
+    .star-label {
+      margin-left: 12px;
+      font-weight: 500;
+      color: var(--dark-blue);
+      min-width: 100px;
+    }
+
+    /* Button Group */
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background-color: var(--dark-blue);
+      color: white;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--dark-blue-dark);
+      box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: var(--border-light);
+      color: var(--text-dark);
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #D0D0D0;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Error Messages */
+    .error-message {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    /* Success Message */
+    .success-banner {
+      display: none;
+      background-color: #E8F5E9;
+      color: var(--success);
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      border-left: 4px solid var(--success);
+      font-weight: 500;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background-color: white;
+      }
+
+      .top-bar {
+        position: static;
+      }
+
+      .button-group {
+        display: none;
+      }
+
+      .card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid var(--border-light);
+      }
+
+      .conditional {
+        page-break-inside: avoid;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="time"],
+      input[type="number"],
+      select,
+      textarea {
+        border: 1px solid var(--text-light);
+        background-color: white;
+      }
+
+      input[type="text"]:focus,
+      input[type="date"]:focus,
+      input[type="time"]:focus,
+      input[type="number"]:focus,
+      select:focus,
+      textarea:focus {
+        box-shadow: none;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .top-bar {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .hero-meta {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="brand">Supren Veg</div>
+    <div class="badge">Formulário 3B de 5</div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>Observações do Degustador</h1>
+    <div class="hero-meta">
+      <div class="meta-pill">Degustador</div>
+      <div class="meta-pill">Etapa 9 do fluxo</div>
+      <div class="meta-pill">Ao final do evento</div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="success-banner" id="successBanner">
+      Formulário validado com sucesso! Preparando para impressão...
+    </div>
+
+    <form id="formDegustador" onsubmit="handleSubmit(event)">
+
+      <!-- SECTION 1: IDENTIFICAÇÃO -->
+      <div class="card">
+        <h2 class="card-title">Identificação</h2>
+
+        <div class="form-group">
+          <label for="degustador">Qual é o seu nome? <span class="required">*</span></label>
+          <input type="text" id="degustador" name="degustador" required placeholder="Digite seu nome completo">
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label for="cliente">Em qual cliente / estabelecimento foi a degustação? <span class="required">*</span></label>
+          <input type="text" id="cliente" name="cliente" required placeholder="Nome do local / estabelecimento">
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label for="data_evento">Qual é a data do evento? <span class="required">*</span></label>
+          <input type="date" id="data_evento" name="data_evento" required>
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label for="hora_inicio">Qual foi o horário de início? <span class="required">*</span></label>
+          <input type="time" id="hora_inicio" name="hora_inicio" required>
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label for="hora_fim">Qual foi o horário de término? <span class="required">*</span></label>
+          <input type="time" id="hora_fim" name="hora_fim" required>
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: EXECUÇÃO -->
+      <div class="card">
+        <h2 class="card-title">Execução</h2>
+        <p class="card-subtitle">Como correu a execução do evento?</p>
+
+        <div class="form-group">
+          <label>A degustação ocorreu conforme o briefing recebido? <span class="required">*</span></label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="briefing_sim" name="briefing_execucao" value="sim" required onchange="toggleConditional('briefing_execucao', ['parcialmente', 'nao'], 'briefing_obs_group')">
+              <label for="briefing_sim">Sim, integralmente</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="briefing_parc" name="briefing_execucao" value="parcialmente" onchange="toggleConditional('briefing_execucao', ['parcialmente', 'nao'], 'briefing_obs_group')">
+              <label for="briefing_parc">Parcialmente — veja observações abaixo</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="briefing_nao" name="briefing_execucao" value="nao" onchange="toggleConditional('briefing_execucao', ['parcialmente', 'nao'], 'briefing_obs_group')">
+              <label for="briefing_nao">Não — veja observações abaixo</label>
+            </div>
+          </div>
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div id="briefing_obs_group" class="conditional">
+          <div class="form-group">
+            <label for="briefing_obs">Descreva o que aconteceu de diferente:</label>
+            <textarea id="briefing_obs" name="briefing_obs" placeholder="Explique as diferenças..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="abordadas">Quantas pessoas foram abordadas? (aprox.) <span class="required">*</span></label>
+          <input type="number" id="abordadas" name="abordadas" min="0" required placeholder="0">
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label for="degustaram">Quantas pessoas degustaram? (aprox.) <span class="required">*</span></label>
+          <input type="number" id="degustaram" name="degustaram" min="0" required placeholder="0">
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label>Quantas porções foram servidas e descartadas por produto? <span class="required">*</span></label>
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Servidas</th>
+                <th>Descartadas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="product-name">Empada de Maçã PP</td>
+                <td><input type="number" id="p1s" name="p1s" min="0" required></td>
+                <td><input type="number" id="p1d" name="p1d" min="0" required></td>
+              </tr>
+              <tr>
+                <td class="product-name">Empada de Espinafre PP</td>
+                <td><input type="number" id="p2s" name="p2s" min="0" required></td>
+                <td><input type="number" id="p2d" name="p2d" min="0" required></td>
+              </tr>
+              <tr>
+                <td class="product-name">Empada de Palmito PP</td>
+                <td><input type="number" id="p3s" name="p3s" min="0" required></td>
+                <td><input type="number" id="p3d" name="p3d" min="0" required></td>
+              </tr>
+              <tr>
+                <td class="product-name">Discos Proteicos 30g</td>
+                <td><input type="number" id="p4s" name="p4s" min="0" required></td>
+                <td><input type="number" id="p4d" name="p4d" min="0" required></td>
+              </tr>
+              <tr>
+                <td class="product-name">Estrogonofe de Grão de Bico</td>
+                <td><input type="number" id="p5s" name="p5s" min="0" required></td>
+                <td><input type="number" id="p5d" name="p5d" min="0" required></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="error-message">Todos os produtos devem ter valores informados</div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: REAÇÃO DO PÚBLICO -->
+      <div class="card">
+        <h2 class="card-title">Reação do Público</h2>
+        <p class="card-subtitle">Como o público recebeu os produtos?</p>
+
+        <div class="form-group">
+          <label>Como você avalia a reação geral do público? <span class="required">*</span></label>
+          <div class="star-rating">
+            <span class="star" data-v="1" onclick="setStar(1)" title="Muito ruim">★</span>
+            <span class="star" data-v="2" onclick="setStar(2)" title="Ruim">★</span>
+            <span class="star" data-v="3" onclick="setStar(3)" title="Regular">★</span>
+            <span class="star" data-v="4" onclick="setStar(4)" title="Bom">★</span>
+            <span class="star" data-v="5" onclick="setStar(5)" title="Muito bom">★</span>
+            <span class="star-label" id="star-label"></span>
+          </div>
+          <input type="hidden" id="reacao_publico" name="reacao_publico" required>
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label for="produto_elogiado">Qual produto foi mais elogiado? <span class="required">*</span></label>
+          <select id="produto_elogiado" name="produto_elogiado" required>
+            <option value="">Selecione um produto</option>
+            <option value="empada_maca">Empada de Maçã PP</option>
+            <option value="empada_espinafre">Empada de Espinafre PP</option>
+            <option value="empada_palmito">Empada de Palmito PP</option>
+            <option value="discos_proteicos">Discos Proteicos 30g</option>
+            <option value="estrogonofe">Estrogonofe de Grão de Bico</option>
+            <option value="nenhum">Nenhum em especial</option>
+          </select>
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div class="form-group">
+          <label for="produto_menor">Qual produto teve menor receptividade?</label>
+          <select id="produto_menor" name="produto_menor">
+            <option value="">Selecione um produto</option>
+            <option value="empada_maca">Empada de Maçã PP</option>
+            <option value="empada_espinafre">Empada de Espinafre PP</option>
+            <option value="empada_palmito">Empada de Palmito PP</option>
+            <option value="discos_proteicos">Discos Proteicos 30g</option>
+            <option value="estrogonofe">Estrogonofe de Grão de Bico</option>
+            <option value="nenhum">Nenhum</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="comentarios">Quais comentários foram mais frequentes do público?</label>
+          <textarea id="comentarios" name="comentarios" placeholder="Digite os comentários mais comuns..."></textarea>
+          <div class="hint">Opcional — ajuda a entender a percepção do público</div>
+        </div>
+
+        <div class="form-group">
+          <label for="perguntas">Houve perguntas que você não soube responder?</label>
+          <textarea id="perguntas" name="perguntas" placeholder="Liste as perguntas que surgiram..."></textarea>
+          <div class="hint">Ajuda a melhorar o próximo briefing</div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: INTERCORRÊNCIAS -->
+      <div class="card">
+        <h2 class="card-title">Intercorrências</h2>
+        <p class="card-subtitle">Houve algum problema durante o evento?</p>
+
+        <div class="form-group">
+          <label>Houve algum problema durante o evento? <span class="required">*</span></label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="interc_nao" name="intercorrencias" value="nao" required onchange="toggleConditional('intercorrencias', ['sim'], 'interc_desc_group')">
+              <label for="interc_nao">Não, tudo ocorreu bem</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="interc_sim" name="intercorrencias" value="sim" onchange="toggleConditional('intercorrencias', ['sim'], 'interc_desc_group')">
+              <label for="interc_sim">Sim — descrever</label>
+            </div>
+          </div>
+          <div class="error-message">Este campo é obrigatório</div>
+        </div>
+
+        <div id="interc_desc_group" class="conditional">
+          <div class="form-group">
+            <label for="interc_desc">Descreva o problema: <span class="required">*</span></label>
+            <textarea id="interc_desc" name="interc_desc" placeholder="Descreva o problema detalhadamente..."></textarea>
+            <div class="error-message">Este campo é obrigatório quando há problema</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="obs">Observações gerais ou sugestões de melhoria</label>
+          <textarea id="obs" name="obs" placeholder="Compartilhe suas observações e sugestões..."></textarea>
+          <div class="hint">Opcional — importante para melhorias contínuas</div>
+        </div>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="button-group">
+        <button type="submit" class="btn-primary">Salvar e gerar PDF</button>
+        <button type="button" class="btn-secondary" onclick="window.print()">Imprimir diretamente</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Initialize form with URL parameters
+    function initForm() {
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has('degustador')) {
+        document.getElementById('degustador').value = params.get('degustador');
+      }
+      if (params.has('cliente')) {
+        document.getElementById('cliente').value = params.get('cliente');
+      }
+      if (params.has('data')) {
+        document.getElementById('data_evento').value = params.get('data');
+      } else {
+        // Auto-fill today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('data_evento').value = today;
+      }
+    }
+
+    // Toggle conditional fields
+    function toggleConditional(triggerName, triggerValues, elementId) {
+      const checked = document.querySelector(`input[name="${triggerName}"]:checked`);
+      const show = checked && triggerValues.includes(checked.value);
+      const element = document.getElementById(elementId);
+      element.style.display = show ? '' : 'none';
+
+      // Clear validation for hidden fields
+      if (!show) {
+        const inputs = element.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+          input.removeAttribute('data-required');
+        });
+      }
+    }
+
+    // Star rating
+    let starVal = 0;
+    const starLabels = ['', 'Muito ruim', 'Ruim', 'Regular', 'Bom', 'Muito bom'];
+
+    function setStar(v) {
+      starVal = v;
+      document.getElementById('reacao_publico').value = v;
+      document.getElementById('star-label').textContent = starLabels[v];
+      document.querySelectorAll('.star').forEach(s => {
+        const val = parseInt(s.dataset.v);
+        if (val <= v) {
+          s.classList.add('on');
+        } else {
+          s.classList.remove('on');
+        }
+      });
+    }
+
+    // Form validation
+    function validateForm() {
+      const form = document.getElementById('formDegustador');
+      const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
+
+      requiredFields.forEach(field => {
+        const errorMsg = field.closest('.form-group')?.querySelector('.error-message');
+
+        if (!field.value || (field.type === 'number' && field.value === '')) {
+          isValid = false;
+          if (errorMsg) errorMsg.style.display = 'block';
+          field.classList.add('invalid');
+        } else {
+          if (errorMsg) errorMsg.style.display = 'none';
+          field.classList.remove('invalid');
+        }
+      });
+
+      // Validate radio buttons separately
+      const radioGroups = ['briefing_execucao', 'intercorrencias'];
+      radioGroups.forEach(groupName => {
+        const group = document.querySelector(`input[name="${groupName}"]:checked`);
+        if (!group) {
+          isValid = false;
+          const label = form.querySelector(`label:has(+ .radio-group input[name="${groupName}"])`);
+          if (label) {
+            const errorMsg = label.closest('.form-group')?.querySelector('.error-message');
+            if (errorMsg) errorMsg.style.display = 'block';
+          }
+        }
+      });
+
+      // Validate star rating
+      if (starVal === 0) {
+        isValid = false;
+        const starGroup = document.querySelector('.star-rating').closest('.form-group');
+        const errorMsg = starGroup?.querySelector('.error-message');
+        if (errorMsg) errorMsg.style.display = 'block';
+      }
+
+      // Validate conditional required fields
+      const interc = document.querySelector(`input[name="intercorrencias"]:checked`)?.value;
+      if (interc === 'sim') {
+        const interc_desc = document.getElementById('interc_desc');
+        if (!interc_desc.value) {
+          isValid = false;
+          const errorMsg = interc_desc.closest('.form-group')?.querySelector('.error-message');
+          if (errorMsg) errorMsg.style.display = 'block';
+        }
+      }
+
+      return isValid;
+    }
+
+    // Handle form submission
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      if (validateForm()) {
+        // Show success banner
+        const banner = document.getElementById('successBanner');
+        banner.style.display = 'block';
+
+        // Small delay then print
+        setTimeout(() => {
+          window.print();
+        }, 500);
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initForm);
+  </script>
+
+</body>
+</html>

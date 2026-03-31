@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supren Veg - Portal de Degustações</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'DM Serif Display', serif;
+        }
+
+        /* Header */
+        header {
+            background-color: #1B5E20;
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-align: right;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 400;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.6rem;
+            border-radius: 6px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: #1B5E20;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Color Legend */
+        .legend {
+            background-color: white;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .legend h3 {
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            color: #1B5E20;
+        }
+
+        .legend-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .color-green { background-color: #4CAF50; }
+        .color-orange { background-color: #FF9800; }
+        .color-blue { background-color: #2196F3; }
+        .color-darkblue { background-color: #1565C0; }
+        .color-purple { background-color: #9C27B0; }
+        .color-teal { background-color: #009688; }
+
+        /* Search Bar */
+        .search-section {
+            background-color: white;
+            padding: 1.5rem 2rem;
+            margin: 0 auto;
+            max-width: 1200px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border-radius: 6px;
+            padding: 0.8rem 1rem;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-wrapper:focus-within {
+            border-color: #1B5E20;
+            background-color: white;
+        }
+
+        #search {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .search-icon {
+            color: #999;
+            margin-right: 0.5rem;
+        }
+
+        /* Cards Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Degustação Card */
+        .degu-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .degu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .card-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 1rem 1rem 0 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-agendado {
+            background-color: #FFF3E0;
+            color: #E65100;
+        }
+
+        .badge-andamento {
+            background-color: #E3F2FD;
+            color: #0D47A1;
+        }
+
+        .badge-concluido {
+            background-color: #E8F5E9;
+            color: #1B5E20;
+        }
+
+        .badge-cancelado {
+            background-color: #FFEBEE;
+            color: #C62828;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 1rem 1rem 0.5rem 1rem;
+            color: #1B5E20;
+        }
+
+        .card-info {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #666;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            row-gap: 0.4rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .card-buttons {
+            padding: 1.2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .form-btn {
+            padding: 0.6rem 0.5rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            color: white;
+            text-align: center;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .form-btn-1 { background-color: #4CAF50; }
+        .form-btn-2 { background-color: #FF9800; }
+        .form-btn-3a { background-color: #2196F3; }
+        .form-btn-3b { background-color: #1565C0; }
+        .form-btn-4 { background-color: #9C27B0; }
+        .form-btn-5 { background-color: #009688; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 2rem auto;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: #1B5E20;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-add-manual {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.8rem 1.6rem;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-add-manual:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1B5E20;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1B5E20;
+            box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1B5E20;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.8rem;
+            }
+
+            .header-subtitle {
+                text-align: center;
+            }
+
+            .legend-items {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* No results message */
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-brand">Supren Veg</div>
+        <div class="header-subtitle">Portal de Degustações</div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Portal de Degustações</h1>
+        <p>Acesse os formulários do seu evento abaixo</p>
+        <div class="hero-buttons">
+            <a href="manual_degustacoes_v4.pdf" target="_blank" class="btn btn-primary">📖 Manual de Degustações</a>
+            <button class="btn btn-secondary" onclick="location.reload()">🔄 Atualizar</button>
+        </div>
+    </section>
+
+    <!-- Color Legend -->
+    <section class="legend">
+        <h3>Guia de Formulários</h3>
+        <div class="legend-items">
+            <div class="legend-item">
+                <span class="legend-color color-green"></span>
+                <span><strong>Form 1:</strong> Agendamento (Vendedor)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color color-orange"></span>
+                <span><strong>Form 2:</strong> Kit e Briefing (Responsável)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color color-blue"></span>
+                <span><strong>Form 3A:</strong> Obs. Vendedor (Vendedor)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color color-darkblue"></span>
+                <span><strong>Form 3B:</strong> Obs. Degustador (Degustador)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color color-purple"></span>
+                <span><strong>Form 4:</strong> Devolução e Pagamento (Responsável)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color color-teal"></span>
+                <span><strong>Form 5:</strong> Relatório Geral (Responsável)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Bar -->
+    <section class="search-section">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search" placeholder="Buscar por cliente, vendedor ou data...">
+        </div>
+    </section>
+
+    <!-- Degustações Container -->
+    <section class="container">
+        <div id="cardsContainer"></div>
+    </section>
+
+    <!-- Manual Add Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Adicionar Degustação</span>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="cliente">Cliente *</label>
+                    <input type="text" id="cliente" name="cliente" required>
+                </div>
+                <div class="form-group">
+                    <label for="data">Data *</label>
+                    <input type="date" id="data" name="data" required>
+                </div>
+                <div class="form-group">
+                    <label for="horario">Horário</label>
+                    <input type="time" id="horario" name="horario">
+                </div>
+                <div class="form-group">
+                    <label for="vendedor">Vendedor</label>
+                    <input type="text" id="vendedor" name="vendedor">
+                </div>
+                <div class="form-group">
+                    <label for="degustador">Degustador</label>
+                    <input type="text" id="degustador" name="degustador">
+                </div>
+                <div class="form-group">
+                    <label for="responsavel">Responsável</label>
+                    <input type="text" id="responsavel" name="responsavel">
+                </div>
+                <div class="form-group">
+                    <label for="endereco">Endereço</label>
+                    <textarea id="endereco" name="endereco"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="kit">Kit</label>
+                    <select id="kit" name="kit">
+                        <option value="">Selecione um kit</option>
+                        <option value="Kit 01">Kit 01</option>
+                        <option value="Kit 02">Kit 02</option>
+                        <option value="Kit 03">Kit 03</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="Agendado">Agendado</option>
+                        <option value="Em andamento">Em andamento</option>
+                        <option value="Concluído">Concluído</option>
+                        <option value="Cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-submit">Adicionar ao Portal</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Supren Veg · Sistema de Degustações · Atualizado em: <span id="lastUpdate"></span></p>
+    </footer>
+
+    <script>
+        // DEGUSTAÇÕES — atualizado automaticamente pelo sincronizar_portal.py
+// Última sincronização: 30/03/2026 às 20:12
+// NÃO EDITE MANUALMENTE ESTA SEÇÃO
+const DEGUSTACOES = [
+  {
+    "id": "322d10bf-fb1d-80cb-b7d7-fc949a0fe91e",
+    "cliente": "Dedé Doces e Queijos",
+    "data": "2026-03-21",
+    "data_br": "21/03/2026",
+    "horario": "8h às 12h",
+    "vendedor": "",
+    "degustador": "Ygor",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Concluído"
+  },
+  {
+    "id": "322d10bf-fb1d-8063-8535-c86d2af1b951",
+    "cliente": "VilaVeg (SVB)",
+    "data": "2026-03-22",
+    "data_br": "22/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Ana, André",
+    "responsavel": "",
+    "endereco": "Espaço Aroeira Lago Norte",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Concluído"
+  },
+  {
+    "id": "329d10bf-fb1d-806d-a4e4-d57c81c4bda2",
+    "cliente": "SHIZEN 407 SUL",
+    "data": "2026-03-28",
+    "data_br": "28/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Mônica",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "322d10bf-fb1d-8073-8c07-e584a28ef934",
+    "cliente": "Feira de Produtores Locais (Malunga)",
+    "data": "2026-03-28",
+    "data_br": "28/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Ester",
+    "responsavel": "",
+    "endereco": "Malunga Sudoeste",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "322d10bf-fb1d-8024-995a-d6738a5d87fe",
+    "cliente": "Comercial Reis",
+    "data": "2026-03-28",
+    "data_br": "28/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Valéria",
+    "responsavel": "",
+    "endereco": "Comercial Reis Lago Norte",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Agendado"
+  },
+  {
+    "id": "330d10bf-fb1d-8066-974a-e6713ea395f3",
+    "cliente": "Hortifruti Bom Preço",
+    "data": "2026-03-31",
+    "data_br": "31/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Hortifruti Bom Preço QE 30",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "330d10bf-fb1d-80eb-ae25-e4c9795230d0",
+    "cliente": "Comercial Reis",
+    "data": "2026-04-04",
+    "data_br": "04/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "32dd10bf-fb1d-805a-949e-ed8ee7a766b1",
+    "cliente": "Temperos & Mel (9h às 13h)",
+    "data": "2026-04-04",
+    "data_br": "04/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Temperos & Mel JB",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "32fd10bf-fb1d-8045-8623-d128a184a839",
+    "cliente": "Supermercado Moreira",
+    "data": "2026-04-11",
+    "data_br": "11/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Rodovia DF-250 Km 2 - 5 Conj M Lote 13 Loja 01 E 02 Cond Novo Horizonte - Itapuã",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Agendado"
+  },
+  {
+    "id": "32fd10bf-fb1d-8086-8fd7-fd0a04d32510",
+    "cliente": "Pedacinho do céu",
+    "data": "2026-04-11",
+    "data_br": "11/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Quadra Cln 312 Bloco C Loja 27 - Asa Norte",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Agendado"
+  },
+  {
+    "id": "32dd10bf-fb1d-8046-afee-d2c4fe51355d",
+    "cliente": "Natufort",
+    "data": "2026-04-11",
+    "data_br": "11/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "322d10bf-fb1d-80a2-b1b5-ca4c0f92c384",
+    "cliente": "Feira SVB + UP",
+    "data": "2026-05-05",
+    "data_br": "05/05/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Câmara Legislativa Federal",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  }
+];
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLastUpdateDate();
+            renderPage();
+            setupSearch();
+            setupModal();
+        });
+
+        // Render page content
+        function renderPage() {
+            const container = document.getElementById('cardsContainer');
+
+            if (DEGUSTACOES.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🗓️</div>
+                        <h2>Nenhuma degustação carregada</h2>
+                        <p>Execute o script 'sincronizar_portal.py' para carregar as degustações do Notion, ou adicione manualmente abaixo.</p>
+                        <button class="btn-add-manual" onclick="openModal()">➕ Adicionar degustação manualmente</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `<div class="cards-grid" id="cardsGrid"></div>`;
+                const grid = document.getElementById('cardsGrid');
+                DEGUSTACOES.forEach(d => {
+                    grid.appendChild(renderCard(d));
+                });
+            }
+        }
+
+        // Render individual card
+        function renderCard(d) {
+            const card = document.createElement('div');
+            card.className = 'degu-card';
+
+            const statusBadgeClass = {
+                'Agendado': 'badge-agendado',
+                'Em andamento': 'badge-andamento',
+                'Concluído': 'badge-concluido',
+                'Cancelado': 'badge-cancelado'
+            }[d.status] || 'badge-agendado';
+
+            const formattedData = d.data ? new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR') : '';
+            const evento = `${d.cliente} — ${formattedData}`;
+
+            const buildUrl = (form, params) => {
+                const baseUrl = form + '.html';
+                const query = new URLSearchParams(params).toString();
+                return query ? `${baseUrl}?${query}` : baseUrl;
+            };
+
+            const urls = {
+                form1: buildUrl('form1_agendamento', {
+                    cliente: d.cliente,
+                    data: d.data,
+                    vendedor: d.vendedor || '',
+                    endereco: d.endereco || '',
+                    horario: d.horario || '',
+                    contato: d.vendedor || ''
+                }),
+                form2: buildUrl('form2_kit_briefing', {
+                    responsavel: d.responsavel || '',
+                    evento: evento,
+                    kit: d.kit || '',
+                    degustador: d.degustador || ''
+                }),
+                form3a: buildUrl('form3a_vendedor', {
+                    vendedor: d.vendedor || '',
+                    cliente: d.cliente,
+                    data: d.data
+                }),
+                form3b: buildUrl('form3b_degustador', {
+                    degustador: d.degustador || '',
+                    cliente: d.cliente,
+                    data: d.data
+                }),
+                form4: buildUrl('form4_devolucao', {
+                    responsavel: d.responsavel || '',
+                    evento: evento,
+                    kit: d.kit || '',
+                    degustador: d.degustador || ''
+                }),
+                form5: buildUrl('form5_relatorio', {
+                    responsavel: d.responsavel || '',
+                    cliente: d.cliente,
+                    data: d.data,
+                    endereco: d.endereco || '',
+                    vendedor: d.vendedor || '',
+                    degustador: d.degustador || '',
+                    kit: d.kit || ''
+                })
+            };
+
+            card.innerHTML = `
+                <span class="card-badge ${statusBadgeClass}">${d.status}</span>
+                <div class="card-title">${d.cliente}</div>
+                <div class="card-info">
+                    <div class="info-item">📅 ${formattedData}</div>
+                    <div class="info-item">👤 ${d.vendedor || '—'}</div>
+                    <div class="info-item">🎯 ${d.degustador || '—'}</div>
+                    <div class="info-item">📦 ${d.kit || '—'}</div>
+                </div>
+                <div class="card-buttons">
+                    <a href="${urls.form1}" class="form-btn form-btn-1">F1</a>
+                    <a href="${urls.form2}" class="form-btn form-btn-2">F2</a>
+                    <a href="${urls.form3a}" class="form-btn form-btn-3a">F3A</a>
+                    <a href="${urls.form3b}" class="form-btn form-btn-3b">F3B</a>
+                    <a href="${urls.form4}" class="form-btn form-btn-4">F4</a>
+                    <a href="${urls.form5}" class="form-btn form-btn-5">F5</a>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Search functionality
+        function setupSearch() {
+            document.getElementById('search').addEventListener('input', e => {
+                const q = e.target.value.toLowerCase();
+                const grid = document.getElementById('cardsGrid');
+
+                if (!grid) return;
+
+                const cards = grid.querySelectorAll('.degu-card');
+                let visibleCount = 0;
+
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    const matches = text.includes(q);
+                    card.style.display = matches ? '' : 'none';
+                    if (matches) visibleCount++;
+                });
+
+                // Show "no results" message if needed
+                let noResults = grid.querySelector('.no-results');
+                if (visibleCount === 0 && q.length > 0) {
+                    if (!noResults) {
+                        noResults = document.createElement('div');
+                        noResults.className = 'no-results';
+                        noResults.textContent = 'Nenhuma degustação encontrada com este critério.';
+                        grid.appendChild(noResults);
+                    }
+                } else if (noResults) {
+                    noResults.remove();
+                }
+            });
+        }
+
+        // Modal functions
+        function setupModal() {
+            const modal = document.getElementById('addModal');
+            const form = document.getElementById('addForm');
+
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+
+                const newDegustation = {
+                    id: Date.now().toString(),
+                    cliente: document.getElementById('cliente').value,
+                    data: document.getElementById('data').value,
+                    horario: document.getElementById('horario').value,
+                    vendedor: document.getElementById('vendedor').value,
+                    degustador: document.getElementById('degustador').value,
+                    responsavel: document.getElementById('responsavel').value,
+                    endereco: document.getElementById('endereco').value,
+                    kit: document.getElementById('kit').value,
+                    status: document.getElementById('status').value
+                };
+
+                DEGUSTACOES.push(newDegustation);
+                closeModal();
+                form.reset();
+                renderPage();
+                setupSearch();
+            });
+        }
+
+        function openModal() {
+            document.getElementById('addModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('addModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+
+        // Update last update date
+        function updateLastUpdateDate() {
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = today.toLocaleDateString('pt-BR', options);
+            document.getElementById('lastUpdate').textContent = dateString;
+        }
+    </script>
+</body>
+</html>

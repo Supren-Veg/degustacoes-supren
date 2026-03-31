@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário 2 - Montagem do Kit e Briefing | Supren Veg</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: white;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .page-break-before {
+                page-break-before: always;
+            }
+
+            .form-container {
+                max-width: 100%;
+                box-shadow: none;
+                margin: 0;
+                padding: 20px;
+            }
+
+            section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #1B5E20;
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .top-bar-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .top-bar-tag {
+            background-color: #E65100;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            min-height: 100vh;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: #E65100;
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 36px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-pill {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #E65100;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #FBE9E7;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-grid.single {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        label .required {
+            color: #E65100;
+            font-weight: 700;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s;
+            background-color: #fafafa;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #E65100;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(230, 81, 0, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #E65100;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        /* Checklist Styles */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background-color: #fafafa;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #E65100;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Radio Group Styles */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: #fafafa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #E65100;
+        }
+
+        .radio-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Conditional Field */
+        .conditional-field {
+            display: none;
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #FBE9E7;
+            border-left: 4px solid #E65100;
+            border-radius: 4px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .conditional-field.visible {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Action Buttons */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: #E65100;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #BF360C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e8e8e8;
+            transform: translateY(-2px);
+        }
+
+        /* Validation Messages */
+        .error-message {
+            color: #d32f2f;
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: #d32f2f;
+            background-color: #ffebee;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            .hero-section {
+                padding: 24px;
+            }
+
+            .hero-title {
+                font-size: 24px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-brand">Supren Veg</div>
+        <div class="top-bar-tag">Formulário 2 de 5</div>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Montagem do Kit e Briefing</h1>
+            <div class="hero-pills">
+                <span class="hero-pill">Responsável da Degustação</span>
+                <span class="hero-pill">D-1 ou dia do evento</span>
+            </div>
+        </div>
+
+        <form id="formKit" name="formKit">
+            <!-- Section 1: Identificação -->
+            <section id="section-identificacao">
+                <h2 class="section-title">Identificação</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="responsavel">Qual é o seu nome? <span class="required">*</span></label>
+                        <input type="text" id="responsavel" name="responsavel" required>
+                        <span class="error-message">Este campo é obrigatório</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data_preenchi">Data do preenchimento <span class="required">*</span></label>
+                        <input type="date" id="data_preenchi" name="data_preenchi" required readonly>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="evento">Qual é o evento de referência? <span class="required">*</span></label>
+                        <input type="text" id="evento" name="evento" placeholder="Ex: Mercado X — 28/03" required>
+                        <span class="error-message">Este campo é obrigatório</span>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="kit">Qual kit será utilizado? <span class="required">*</span></label>
+                        <select id="kit" name="kit" required>
+                            <option value="">Selecione um kit</option>
+                            <option value="Kit 01">Kit 01</option>
+                            <option value="Kit 02">Kit 02</option>
+                            <option value="Kit 03">Kit 03</option>
+                        </select>
+                        <span class="error-message">Este campo é obrigatório</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="degustador">Qual é o nome do degustador? <span class="required">*</span></label>
+                        <input type="text" id="degustador" name="degustador" required>
+                        <span class="error-message">Este campo é obrigatório</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Checklist do Kit -->
+            <section id="section-kit">
+                <h2 class="section-title">O kit está completo e em bom estado?</h2>
+                <p class="section-subtitle">Checklist do Kit</p>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span><strong id="kitCheckedCount">0</strong> de 11 itens conferidos</span>
+                        <span><strong id="kitProgress">0</strong>%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="kitProgressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_1" name="kit_items" value="balcao">
+                        <label for="kit_item_1">Balcão com logo Supren Veg</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_2" name="kit_items" value="airfryer">
+                        <label for="kit_item_2">Airfryer</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_3" name="kit_items" value="bandeja">
+                        <label for="kit_item_3">Bandeja de serviço</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_4" name="kit_items" value="faca">
+                        <label for="kit_item_4">Faca</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_5" name="kit_items" value="colher_servico">
+                        <label for="kit_item_5">Colher de serviço</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_6" name="kit_items" value="copinhos">
+                        <label for="kit_item_6">Copinhos de papel descartáveis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_7" name="kit_items" value="colheres_bambu">
+                        <label for="kit_item_7">Colheres de bambu descartáveis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_8" name="kit_items" value="guardanapos">
+                        <label for="kit_item_8">Guardanapos</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_9" name="kit_items" value="touca">
+                        <label for="kit_item_9">Touca descartável (EPI)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_10" name="kit_items" value="mascara">
+                        <label for="kit_item_10">Máscara descartável (EPI)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="kit_item_11" name="kit_items" value="luvas">
+                        <label for="kit_item_11">Luvas descartáveis (EPI)</label>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 28px;">
+                    <label><strong>Todos os itens estão íntegros e completos?</strong> <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="kit_completo_sim" name="kit_completo" value="sim" onchange="toggleConditional('kit_completo', 'nao', 'kit_problema_field')">
+                            <label for="kit_completo_sim">Sim — kit completo e sem problemas</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="kit_completo_nao" name="kit_completo" value="nao" onchange="toggleConditional('kit_completo', 'nao', 'kit_problema_field')">
+                            <label for="kit_completo_nao">Não — há um problema</label>
+                        </div>
+                    </div>
+                    <span class="error-message">Este campo é obrigatório</span>
+                </div>
+
+                <div id="kit_problema_field" class="conditional-field">
+                    <div class="form-group">
+                        <label for="kit_problema">Descreva o problema <span class="required">*</span></label>
+                        <textarea id="kit_problema" name="kit_problema"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Checklist de Briefing -->
+            <section id="section-briefing">
+                <h2 class="section-title">O briefing foi realizado com o degustador?</h2>
+                <p class="section-subtitle">Checklist de Briefing</p>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span><strong id="briefingCheckedCount">0</strong> de 7 tópicos</span>
+                        <span><strong id="briefingProgress">0</strong>%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="briefingProgressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="checklist">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="brief_item_1" name="brief_items" value="apresentacao">
+                        <label for="brief_item_1">Apresentação da Supren Veg (missão e portfólio vegano/vegetariano)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="brief_item_2" name="brief_items" value="produtos">
+                        <label for="brief_item_2">Produtos do dia e tempo de preparo na airfryer</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="brief_item_3" name="brief_items" value="servir">
+                        <label for="brief_item_3">Forma de servir: empadas e discos em guardanapo; estrogonofe em copinho com colher de bambu</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="brief_item_4" name="brief_items" value="abordagem">
+                        <label for="brief_item_4">Abordagem ao público: cordial, sem pressão, sem mencionar preços</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="brief_item_5" name="brief_items" value="nao_fazer">
+                        <label for="brief_item_5">O que NÃO fazer: não deixar balcão sem supervisão, não fazer promessas</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="brief_item_6" name="brief_items" value="epi">
+                        <label for="brief_item_6">Uso obrigatório de EPI durante toda a manipulação</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="brief_item_7" name="brief_items" value="observacoes">
+                        <label for="brief_item_7">Como registrar observações e repassar ao Responsável ao final</label>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 28px;">
+                    <label><strong>O degustador confirmou presença e entendeu o briefing?</strong> <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="briefing_confirmado_sim" name="briefing_confirmado" value="sim" onchange="toggleConditional('briefing_confirmado', 'nao', 'briefing_ocorrencia_field')">
+                            <label for="briefing_confirmado_sim">Sim — confirmado e pronto</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="briefing_confirmado_nao" name="briefing_confirmado" value="nao" onchange="toggleConditional('briefing_confirmado', 'nao', 'briefing_ocorrencia_field')">
+                            <label for="briefing_confirmado_nao">Não — há uma ocorrência</label>
+                        </div>
+                    </div>
+                    <span class="error-message">Este campo é obrigatório</span>
+                </div>
+
+                <div id="briefing_ocorrencia_field" class="conditional-field">
+                    <div class="form-group">
+                        <label for="briefing_ocorrencia">Descreva a ocorrência <span class="required">*</span></label>
+                        <textarea id="briefing_ocorrencia" name="briefing_ocorrencia"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Entrega do Kit -->
+            <section id="section-entrega">
+                <h2 class="section-title">O kit foi entregue ao degustador?</h2>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="data_entrega">Data da entrega <span class="required">*</span></label>
+                        <input type="date" id="data_entrega" name="data_entrega" required>
+                        <span class="error-message">Este campo é obrigatório</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hora_entrega">Horário da entrega <span class="required">*</span></label>
+                        <input type="time" id="hora_entrega" name="hora_entrega" required>
+                        <span class="error-message">Este campo é obrigatório</span>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="assinatura">A saída foi assinada pelo degustador? <span class="required">*</span></label>
+                        <select id="assinatura" name="assinatura" required>
+                            <option value="">Selecione uma opção</option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                        <span class="error-message">Este campo é obrigatório</span>
+                    </div>
+                </div>
+
+                <div class="form-grid single">
+                    <div class="form-group">
+                        <label for="obs">Observações gerais</label>
+                        <textarea id="obs" name="obs" placeholder="Deixe aqui qualquer observação relevante sobre a entrega..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <div class="button-group no-print">
+                <button type="button" class="btn-secondary" onclick="window.print()">Imprimir / PDF</button>
+                <button type="submit" class="btn-primary">Enviar Formulário</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Initialize form with today's date
+        function initializeForm() {
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            document.getElementById('data_preenchi').value = dateString;
+
+            // Read URL parameters
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.has('responsavel')) {
+                document.getElementById('responsavel').value = params.get('responsavel');
+            }
+
+            if (params.has('evento')) {
+                document.getElementById('evento').value = params.get('evento');
+            }
+
+            if (params.has('kit')) {
+                document.getElementById('kit').value = params.get('kit');
+            }
+
+            if (params.has('degustador')) {
+                document.getElementById('degustador').value = params.get('degustador');
+            }
+
+            // Add event listeners to checkboxes
+            addChecklistListeners();
+        }
+
+        // Toggle conditional fields
+        function toggleConditional(radioName, value, elementId) {
+            const element = document.getElementById(elementId);
+            const isChecked = document.querySelector(`input[name="${radioName}"]:checked`)?.value === value;
+
+            if (isChecked) {
+                element.classList.add('visible');
+                element.style.display = 'block';
+            } else {
+                element.classList.remove('visible');
+                element.style.display = 'none';
+            }
+        }
+
+        // Update kit checklist progress
+        function updateKitProgress() {
+            const items = document.querySelectorAll('input[name="kit_items"]:checked').length;
+            const total = 11;
+            const percent = Math.round((items / total) * 100);
+
+            document.getElementById('kitCheckedCount').textContent = items;
+            document.getElementById('kitProgress').textContent = percent;
+            document.getElementById('kitProgressBar').style.width = percent + '%';
+        }
+
+        // Update briefing checklist progress
+        function updateBriefingProgress() {
+            const items = document.querySelectorAll('input[name="brief_items"]:checked').length;
+            const total = 7;
+            const percent = Math.round((items / total) * 100);
+
+            document.getElementById('briefingCheckedCount').textContent = items;
+            document.getElementById('briefingProgress').textContent = percent;
+            document.getElementById('briefingProgressBar').style.width = percent + '%';
+        }
+
+        // Add listeners to all checkboxes
+        function addChecklistListeners() {
+            document.querySelectorAll('input[name="kit_items"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateKitProgress);
+            });
+
+            document.querySelectorAll('input[name="brief_items"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateBriefingProgress);
+            });
+        }
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const form = document.getElementById('formKit');
+            const requiredFields = form.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                const group = field.closest('.form-group');
+
+                if (!field.value || (field.type === 'radio' && !form.querySelector(`input[name="${field.name}"]:checked`))) {
+                    group.classList.add('error');
+                    isValid = false;
+                } else {
+                    group.classList.remove('error');
+                }
+            });
+
+            // Validate conditional fields if visible
+            const kitProblemaField = document.getElementById('kit_problema_field');
+            if (kitProblemaField.style.display !== 'none' && kitProblemaField.style.display !== '') {
+                const kitProblemaTextarea = document.getElementById('kit_problema');
+                const kitProblemaGroup = kitProblemaTextarea.closest('.form-group');
+
+                if (!kitProblemaTextarea.value) {
+                    kitProblemaGroup.classList.add('error');
+                    isValid = false;
+                } else {
+                    kitProblemaGroup.classList.remove('error');
+                }
+            }
+
+            const briefingOcorrenciaField = document.getElementById('briefing_ocorrencia_field');
+            if (briefingOcorrenciaField.style.display !== 'none' && briefingOcorrenciaField.style.display !== '') {
+                const briefingOcorrenciaTextarea = document.getElementById('briefing_ocorrencia');
+                const briefingOcorrenciaGroup = briefingOcorrenciaTextarea.closest('.form-group');
+
+                if (!briefingOcorrenciaTextarea.value) {
+                    briefingOcorrenciaGroup.classList.add('error');
+                    isValid = false;
+                } else {
+                    briefingOcorrenciaGroup.classList.remove('error');
+                }
+            }
+
+            return isValid;
+        }
+
+        // Form submission
+        document.getElementById('formKit').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (validateForm()) {
+                // In a real application, this would send data to a server
+                alert('Formulário validado com sucesso! Pronto para envio.');
+                console.log('Form data:', new FormData(this));
+            } else {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+            }
+        });
+
+        // Clear error on input
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('change', function() {
+                const group = this.closest('.form-group');
+                if (group && this.value) {
+                    group.classList.remove('error');
+                }
+            });
+
+            field.addEventListener('input', function() {
+                const group = this.closest('.form-group');
+                if (group && this.value) {
+                    group.classList.remove('error');
+                }
+            });
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeForm);
+    </script>
+</body>
+</html>

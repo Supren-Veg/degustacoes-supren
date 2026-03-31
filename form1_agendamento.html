@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Degustação — Supren Veg</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-dark: #1B5E20;
+            --color-main: #2E7D32;
+            --color-light: #e8f5e9;
+            --color-mid: #a5d6a7;
+            --color-white: #ffffff;
+            --color-gray: #f5f5f5;
+            --color-text: #333333;
+            --color-text-light: #666666;
+            --color-error: #d32f2f;
+            --color-success: #388e3c;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--color-gray);
+            color: var(--color-text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header / Top Bar */
+        .header {
+            background-color: var(--color-dark);
+            color: var(--color-white);
+            padding: var(--spacing-md);
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 760px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .header-tag {
+            background-color: var(--color-main);
+            padding: 0.35rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--color-main) 0%, var(--color-dark) 100%);
+            color: var(--color-white);
+            padding: var(--spacing-xl) var(--spacing-md);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: 0.5px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.5;
+        }
+
+        .meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .pill {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--color-white);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Container */
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: var(--spacing-lg) var(--spacing-md);
+            background-color: var(--color-white);
+            min-height: 100vh;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--color-light);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.25rem;
+            color: var(--color-main);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--color-light);
+        }
+
+        /* Form Fields */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+            color: var(--color-text);
+            font-size: 1rem;
+        }
+
+        .form-group.required label::after {
+            content: " *";
+            color: var(--color-error);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="time"],
+        .form-group textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid #ddd;
+            border-radius: 0.375rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--color-text);
+            background-color: var(--color-white);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group input[type="time"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-main);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: var(--color-error);
+            background-color: rgba(211, 47, 47, 0.02);
+        }
+
+        .form-group.error .error-message {
+            color: var(--color-error);
+            font-size: 0.875rem;
+            margin-top: var(--spacing-xs);
+            display: block;
+        }
+
+        .hint {
+            font-size: 0.875rem;
+            color: var(--color-text-light);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Radio Groups */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .radio-item input[type="radio"] {
+            accent-color: var(--color-main);
+            cursor: pointer;
+            width: 1.25rem;
+            height: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .radio-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+            user-select: none;
+        }
+
+        /* Stock Grid */
+        .stock-grid {
+            display: grid;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .stock-item {
+            background-color: var(--color-light);
+            padding: var(--spacing-md);
+            border-radius: 0.375rem;
+            border: 1px solid var(--color-mid);
+        }
+
+        .stock-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .stock-item-name {
+            font-weight: 500;
+            color: var(--color-text);
+            flex: 1;
+        }
+
+        .stock-item-qty {
+            font-size: 0.875rem;
+            color: var(--color-text-light);
+            white-space: nowrap;
+        }
+
+        .stock-item-options {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        /* Countdown */
+        .countdown {
+            display: inline-block;
+            background-color: var(--color-mid);
+            color: var(--color-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: var(--spacing-xs);
+        }
+
+        .countdown.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        /* Alert */
+        .alert {
+            padding: var(--spacing-md);
+            border-radius: 0.375rem;
+            margin-bottom: var(--spacing-lg);
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert.warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--color-light);
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--color-main);
+            color: var(--color-white);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--color-light);
+            color: var(--color-main);
+            flex: 1;
+            min-width: 200px;
+            border: 2px solid var(--color-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-mid);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background-color: var(--color-white);
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 0;
+                background-color: var(--color-white);
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .print-header {
+                display: block !important;
+                text-align: center;
+                font-size: 0.75rem;
+                color: var(--color-text-light);
+                margin-bottom: var(--spacing-md);
+                padding-bottom: var(--spacing-md);
+                border-bottom: 1px solid #ddd;
+            }
+
+            button {
+                display: none !important;
+            }
+
+            .button-group {
+                display: none !important;
+            }
+
+            input, textarea, select {
+                border: 1px solid #999;
+            }
+
+            input[type="radio"] {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+
+        .print-header {
+            display: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 640px) {
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .hero-title {
+                font-size: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                flex: 1;
+                min-width: auto;
+            }
+
+            .meta-pills {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header no-print">
+        <div class="header-content">
+            <div class="header-brand">Supren Veg</div>
+            <div class="header-tag">Formulário 1 de 5</div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero no-print">
+        <div class="hero-content">
+            <h1 class="hero-title">Agendamento de Degustação</h1>
+            <p class="hero-subtitle">Formulário para agendamento de eventos de degustação junto a clientes</p>
+            <div class="meta-pills">
+                <span class="pill">Responsável: Vendedor</span>
+                <span class="pill">Etapas 1–4</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="print-header">
+            Supren Veg — Agendamento de Degustação — Impresso em <span id="print-date"></span>
+        </div>
+
+        <form id="form-agendamento">
+            <!-- Alert for Stock Issues -->
+            <div id="stock-alert" class="alert warning no-print">
+                ⚠️ Um ou mais produtos estão sem estoque suficiente. A degustação não deve ser agendada.
+            </div>
+
+            <!-- Section 1: Identificação -->
+            <div class="form-section">
+                <h2 class="section-title">1. Identificação</h2>
+
+                <div class="form-group required">
+                    <label for="vendedor">Qual é o seu nome?</label>
+                    <input type="text" id="vendedor" name="vendedor" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="data_preenchi">Data do preenchimento</label>
+                    <input type="date" id="data_preenchi" name="data_preenchi" readonly>
+                </div>
+            </div>
+
+            <!-- Section 2: Dados do Cliente -->
+            <div class="form-section">
+                <h2 class="section-title">2. Dados do Cliente</h2>
+
+                <div class="form-group required">
+                    <label for="cliente">Qual é o nome do cliente / estabelecimento?</label>
+                    <input type="text" id="cliente" name="cliente" required>
+                </div>
+
+                <div class="form-group required">
+                    <label for="endereco">Qual é o endereço completo do evento?</label>
+                    <textarea id="endereco" name="endereco" required></textarea>
+                </div>
+
+                <div class="form-group required">
+                    <label for="contato">Quem é o contato no cliente?</label>
+                    <input type="text" id="contato" name="contato" required>
+                    <div class="hint">Inclua nome e telefone</div>
+                </div>
+
+                <div class="form-group required">
+                    <label>Este é um cliente novo?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="cliente-ativo" name="tipo-cliente" value="ativo" required>
+                            <label for="cliente-ativo">Não — cliente ativo</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="cliente-novo" name="tipo-cliente" value="novo" required>
+                            <label for="cliente-novo">Sim — cliente novo (aprovação do gestor obtida)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Verificação de Estoque -->
+            <div class="form-section">
+                <h2 class="section-title">3. Verificação de Estoque</h2>
+                <p style="margin-bottom: var(--spacing-lg); color: var(--color-text-light);">Os 5 produtos estão em estoque suficiente para o evento?</p>
+
+                <div class="stock-grid">
+                    <!-- Empada de Maçã -->
+                    <div class="stock-item">
+                        <div class="stock-item-header">
+                            <span class="stock-item-name">Empada de Maçã PP</span>
+                            <span class="stock-item-qty">25 un.</span>
+                        </div>
+                        <div class="stock-item-options">
+                            <div class="radio-item">
+                                <input type="radio" id="stock-maca-sim" name="stock-maca" value="sim" checked>
+                                <label for="stock-maca-sim">Sim</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="stock-maca-nao" name="stock-maca" value="nao">
+                                <label for="stock-maca-nao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empada de Espinafre -->
+                    <div class="stock-item">
+                        <div class="stock-item-header">
+                            <span class="stock-item-name">Empada de Espinafre PP</span>
+                            <span class="stock-item-qty">25 un.</span>
+                        </div>
+                        <div class="stock-item-options">
+                            <div class="radio-item">
+                                <input type="radio" id="stock-espin-sim" name="stock-espin" value="sim" checked>
+                                <label for="stock-espin-sim">Sim</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="stock-espin-nao" name="stock-espin" value="nao">
+                                <label for="stock-espin-nao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empada de Palmito -->
+                    <div class="stock-item">
+                        <div class="stock-item-header">
+                            <span class="stock-item-name">Empada de Palmito PP</span>
+                            <span class="stock-item-qty">25 un.</span>
+                        </div>
+                        <div class="stock-item-options">
+                            <div class="radio-item">
+                                <input type="radio" id="stock-palm-sim" name="stock-palm" value="sim" checked>
+                                <label for="stock-palm-sim">Sim</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="stock-palm-nao" name="stock-palm" value="nao">
+                                <label for="stock-palm-nao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discos Proteicos -->
+                    <div class="stock-item">
+                        <div class="stock-item-header">
+                            <span class="stock-item-name">Discos Proteicos 30g</span>
+                            <span class="stock-item-qty">50 un.</span>
+                        </div>
+                        <div class="stock-item-options">
+                            <div class="radio-item">
+                                <input type="radio" id="stock-disco-sim" name="stock-disco" value="sim" checked>
+                                <label for="stock-disco-sim">Sim</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="stock-disco-nao" name="stock-disco" value="nao">
+                                <label for="stock-disco-nao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estrogonofe -->
+                    <div class="stock-item">
+                        <div class="stock-item-header">
+                            <span class="stock-item-name">Estrogonofe de Grão de Bico</span>
+                            <span class="stock-item-qty">1 cx.</span>
+                        </div>
+                        <div class="stock-item-options">
+                            <div class="radio-item">
+                                <input type="radio" id="stock-estrog-sim" name="stock-estrog" value="sim" checked>
+                                <label for="stock-estrog-sim">Sim</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="stock-estrog-nao" name="stock-estrog" value="nao">
+                                <label for="stock-estrog-nao">Não</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Agendamento -->
+            <div class="form-section">
+                <h2 class="section-title">4. Agendamento</h2>
+
+                <div class="form-group required">
+                    <label for="data_evento">Qual é a data acordada com o cliente?</label>
+                    <input type="date" id="data_evento" name="data_evento" required>
+                    <div class="hint" id="countdown-hint" style="margin-top: var(--spacing-sm);"></div>
+                </div>
+
+                <div class="form-group required">
+                    <label for="horario">Qual é o horário previsto de início?</label>
+                    <input type="time" id="horario" name="horario" required>
+                </div>
+            </div>
+
+            <!-- Section 5: Registro na Fácil -->
+            <div class="form-section">
+                <h2 class="section-title">5. Registro na Fácil</h2>
+
+                <div class="form-group required">
+                    <label>A saída dos produtos foi cadastrada na Fácil com destinação 'Degustação'?</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="facil-sim" name="facil-registro" value="sim" required>
+                            <label for="facil-sim">Sim — já cadastrado</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="facil-nao" name="facil-registro" value="nao" required>
+                            <label for="facil-nao">Ainda não — farei antes do evento</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6: Observações -->
+            <div class="form-section">
+                <h2 class="section-title">6. Observações</h2>
+
+                <div class="form-group">
+                    <label for="obs">Há alguma observação importante para o Responsável?</label>
+                    <textarea id="obs" name="obs" placeholder="Deixe aqui suas observações (opcional)"></textarea>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group no-print">
+                <button type="button" class="btn-primary" id="btn-salvar" onclick="salvarEGerar()">Salvar e Gerar PDF</button>
+                <button type="button" class="btn-secondary" id="btn-imprimir" onclick="imprimirDiretamente()">Imprimir Diretamente</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Initialize form on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setDataPreenchi();
+            preencherParametrosURL();
+            setupEventListeners();
+            atualizarCountdown();
+        });
+
+        // Set current date in data_preenchi field
+        function setDataPreenchi() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('data_preenchi').value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        // Set print date
+        function setPrintDate() {
+            const today = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('print-date').textContent = today.toLocaleDateString('pt-BR', options);
+        }
+
+        // Pre-fill form from URL parameters
+        function preencherParametrosURL() {
+            const params = new URLSearchParams(window.location.search);
+            const mapping = {
+                'vendedor': 'vendedor',
+                'cliente': 'cliente',
+                'endereco': 'endereco',
+                'data': 'data_evento',
+                'horario': 'horario',
+                'contato': 'contato'
+            };
+
+            for (const [paramName, fieldId] of Object.entries(mapping)) {
+                if (params.has(paramName)) {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.value = params.get(paramName);
+                    }
+                }
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Monitor stock changes
+            const stockInputs = document.querySelectorAll('input[name^="stock-"]');
+            stockInputs.forEach(input => {
+                input.addEventListener('change', verificarEstoque);
+            });
+
+            // Monitor date changes for countdown
+            document.getElementById('data_evento').addEventListener('change', atualizarCountdown);
+
+            // Form submission (though we're not actually submitting)
+            document.getElementById('form-agendamento').addEventListener('submit', function(e) {
+                e.preventDefault();
+            });
+        }
+
+        // Verify stock and show alert
+        function verificarEstoque() {
+            const products = ['stock-maca', 'stock-espin', 'stock-palm', 'stock-disco', 'stock-estrog'];
+            let hasNoStock = false;
+
+            products.forEach(product => {
+                const selected = document.querySelector(`input[name="${product}"]:checked`);
+                if (selected && selected.value === 'nao') {
+                    hasNoStock = true;
+                }
+            });
+
+            const alert = document.getElementById('stock-alert');
+            if (hasNoStock) {
+                alert.classList.add('show');
+            } else {
+                alert.classList.remove('show');
+            }
+        }
+
+        // Update countdown display
+        function atualizarCountdown() {
+            const dataEvento = document.getElementById('data_evento').value;
+            const hint = document.getElementById('countdown-hint');
+
+            if (!dataEvento) {
+                hint.innerHTML = '';
+                return;
+            }
+
+            const eventoDate = new Date(dataEvento);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const diffTime = eventoDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays < 0) {
+                hint.innerHTML = '<span class="countdown warning">Data passada</span>';
+            } else if (diffDays < 10) {
+                hint.innerHTML = `<span class="countdown warning">${diffDays} dias de antecedência</span> (mínimo 10 dias recomendado)`;
+            } else {
+                hint.innerHTML = `<span class="countdown">${diffDays} dias de antecedência</span>`;
+            }
+        }
+
+        // Validate form
+        function validarFormulario() {
+            const form = document.getElementById('form-agendamento');
+            const fields = form.querySelectorAll('[required]');
+            let isValid = true;
+            let firstError = null;
+
+            fields.forEach(field => {
+                const parent = field.closest('.form-group');
+                if (!parent) return;
+
+                // Clear previous error state
+                parent.classList.remove('error');
+                const errorMsg = parent.querySelector('.error-message');
+                if (errorMsg) errorMsg.remove();
+
+                // Check if field is empty or not selected (for radio)
+                let isEmpty = false;
+                if (field.type === 'radio') {
+                    const radioGroup = form.querySelector(`input[name="${field.name}"]:checked`);
+                    isEmpty = !radioGroup;
+                } else {
+                    isEmpty = !field.value || field.value.trim() === '';
+                }
+
+                if (isEmpty) {
+                    isValid = false;
+                    parent.classList.add('error');
+                    const errorSpan = document.createElement('span');
+                    errorSpan.className = 'error-message';
+                    errorSpan.textContent = 'Campo obrigatório';
+                    parent.appendChild(errorSpan);
+
+                    if (!firstError) {
+                        firstError = field;
+                    }
+                }
+            });
+
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            return isValid;
+        }
+
+        // Save and generate PDF
+        function salvarEGerar() {
+            if (validarFormulario()) {
+                setPrintDate();
+                window.print();
+            }
+        }
+
+        // Print directly
+        function imprimirDiretamente() {
+            setPrintDate();
+            window.print();
+        }
+
+        // Validate date input (min 10 days from today)
+        document.getElementById('data_evento').addEventListener('input', function() {
+            const dataEvento = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const minDate = new Date(today);
+            minDate.setDate(minDate.getDate() + 10);
+
+            if (dataEvento < minDate && this.value) {
+                this.setAttribute('min', minDate.toISOString().split('T')[0]);
+            }
+        });
+
+        // Set minimum date to 10 days from today
+        window.addEventListener('load', function() {
+            const today = new Date();
+            const minDate = new Date(today);
+            minDate.setDate(minDate.getDate() + 10);
+
+            const yyyy = minDate.getFullYear();
+            const mm = String(minDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(minDate.getDate()).padStart(2, '0');
+
+            document.getElementById('data_evento').setAttribute('min', `${yyyy}-${mm}-${dd}`);
+        });
+    </script>
+</body>
+</html>

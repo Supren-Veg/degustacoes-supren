@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form 3A — Observações da Degustação (Vendedor)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      background-color: #1B5E20;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .top-bar .brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .top-bar .tag {
+      background-color: rgba(255,255,255,0.2);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+      color: white;
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+    }
+
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .pill {
+      background-color: rgba(255,255,255,0.25);
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    /* Card Styling */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #E3F2FD;
+    }
+
+    .card h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: #0D47A1;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #E3F2FD;
+    }
+
+    .card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: #1565C0;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 15px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .form-group .required {
+      color: #D32F2F;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="date"],
+    .form-group input[type="number"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 15px;
+      border: 1px solid #90CAF9;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input[type="text"]:focus,
+    .form-group input[type="date"]:focus,
+    .form-group input[type="number"]:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #1565C0;
+      box-shadow: 0 0 0 3px #E3F2FD;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Radio/Checkbox Groups */
+    .radio-group,
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .radio-option,
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .radio-option input[type="radio"],
+    .checkbox-option input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #1565C0;
+    }
+
+    .radio-option label,
+    .checkbox-option label {
+      margin: 0;
+      cursor: pointer;
+      font-weight: 400;
+      user-select: none;
+    }
+
+    /* Star Rating */
+    .star-rating {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .star {
+      font-size: 32px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.2s, transform 0.2s;
+      user-select: none;
+    }
+
+    .star:hover,
+    .star.on {
+      color: #F9A825;
+      transform: scale(1.1);
+    }
+
+    .star-label {
+      font-size: 14px;
+      color: #666;
+      min-width: 100px;
+      margin-left: 8px;
+    }
+
+    /* Conditional Blocks */
+    .conditional-block {
+      background-color: #E3F2FD;
+      border-left: 4px solid #1565C0;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .conditional-block.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Table Styling */
+    .table-wrapper {
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    table thead {
+      background-color: #E3F2FD;
+    }
+
+    table th {
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #0D47A1;
+      border-bottom: 2px solid #90CAF9;
+    }
+
+    table td {
+      padding: 12px;
+      border-bottom: 1px solid #E3F2FD;
+    }
+
+    table td input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 14px;
+    }
+
+    table tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    /* Note Styling */
+    .note {
+      background-color: #FFF9C4;
+      border-left: 4px solid #F57F17;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #666;
+      margin-top: 12px;
+    }
+
+    /* Separator */
+    .separator {
+      height: 2px;
+      background: linear-gradient(to right, transparent, #90CAF9, transparent);
+      margin: 32px 0;
+    }
+
+    /* Form Actions */
+    .form-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 48px;
+      padding: 24px;
+    }
+
+    .btn {
+      padding: 12px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .btn-primary {
+      background-color: #1565C0;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0D47A1;
+      box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: #E3F2FD;
+      color: #1565C0;
+      border: 1px solid #90CAF9;
+    }
+
+    .btn-secondary:hover {
+      background-color: #90CAF9;
+      color: white;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: white;
+      }
+      .form-actions {
+        display: none;
+      }
+      .card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+      input, textarea, select {
+        border-color: #999 !important;
+        box-shadow: none !important;
+      }
+      .hero {
+        page-break-after: avoid;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .top-bar {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+      .card {
+        padding: 20px;
+      }
+      .meta-pills {
+        flex-direction: column;
+        align-items: center;
+      }
+      .form-actions {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+      }
+      table {
+        font-size: 12px;
+      }
+      table th, table td {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="brand">Supren Veg</div>
+    <div class="tag">Formulário 3A de 5</div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>Observações do Vendedor</h1>
+    <div class="meta-pills">
+      <div class="pill">Vendedor</div>
+      <div class="pill">Etapa 9 do fluxo</div>
+      <div class="pill">No local do evento</div>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <div class="container">
+    <form id="form3a" method="POST">
+
+      <!-- Section 1: Identificação -->
+      <div class="card">
+        <h2>Identificação</h2>
+
+        <div class="form-group">
+          <label for="vendedor">
+            Qual é o seu nome?
+            <span class="required">*</span>
+          </label>
+          <input type="text" id="vendedor" name="vendedor" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cliente">
+            Qual é o cliente / estabelecimento?
+            <span class="required">*</span>
+          </label>
+          <input type="text" id="cliente" name="cliente" required>
+        </div>
+
+        <div class="form-group">
+          <label for="data_evento">
+            Qual é a data do evento?
+            <span class="required">*</span>
+          </label>
+          <input type="date" id="data_evento" name="data_evento" required>
+        </div>
+      </div>
+
+      <!-- Section 2: Percepção do Cliente -->
+      <div class="card">
+        <h2>Como foi a recepção do público?</h2>
+
+        <div class="form-group">
+          <label>
+            O cliente acompanhou parte da degustação?
+            <span class="required">*</span>
+          </label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="acompanhou_sim" name="acompanhou" value="sim" required>
+              <label for="acompanhou_sim">Sim</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="acompanhou_nao" name="acompanhou" value="nao">
+              <label for="acompanhou_nao">Não</label>
+            </div>
+          </div>
+        </div>
+
+        <h3>Como o cliente avaliou a recepção do público?</h3>
+        <div class="form-group">
+          <div class="star-rating">
+            <span class="star" data-v="1" onclick="setStar(1)">★</span>
+            <span class="star" data-v="2" onclick="setStar(2)">★</span>
+            <span class="star" data-v="3" onclick="setStar(3)">★</span>
+            <span class="star" data-v="4" onclick="setStar(4)">★</span>
+            <span class="star" data-v="5" onclick="setStar(5)">★</span>
+            <span id="star-label" class="star-label"></span>
+          </div>
+          <input type="hidden" id="avaliacao_recepcao" name="avaliacao_recepcao" value="0">
+        </div>
+
+        <div class="form-group">
+          <label for="produto_comentado">
+            Qual produto foi mais comentado pelo cliente?
+            <span class="required">*</span>
+          </label>
+          <select id="produto_comentado" name="produto_comentado" required>
+            <option value="">— Selecione —</option>
+            <option value="empada_maca">Empada de Maçã PP</option>
+            <option value="empada_espinafre">Empada de Espinafre PP</option>
+            <option value="empada_palmito">Empada de Palmito PP</option>
+            <option value="discos_proteicos">Discos Proteicos 30g</option>
+            <option value="estrogonofe_grao">Estrogonofe de Grão de Bico</option>
+            <option value="nenhum">Nenhum em especial</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="feedback_cliente">
+            Qual foi o feedback do cliente sobre os produtos?
+          </label>
+          <textarea id="feedback_cliente" name="feedback_cliente" placeholder="Digite o feedback..."></textarea>
+        </div>
+      </div>
+
+      <!-- Section 3: Resultado Comercial -->
+      <div class="card">
+        <h2>Qual foi o resultado comercial do evento?</h2>
+
+        <div class="form-group">
+          <label for="vendas_dia">
+            Qual o valor das vendas realizadas no dia? (R$)
+            <span class="required">*</span>
+          </label>
+          <input type="number" id="vendas_dia" name="vendas_dia" min="0" step="0.01" required>
+          <div class="note">Valor informado pelo cliente — quanto foi vendido durante o evento</div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            Foi possível confirmar esse valor com o cliente?
+            <span class="required">*</span>
+          </label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="confirmacao_sim" name="confirmacao_valor" value="confirmado" required>
+              <label for="confirmacao_sim">Sim — valor confirmado</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="confirmacao_est" name="confirmacao_valor" value="estimativa">
+              <label for="confirmacao_est">Estimativa aproximada</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="confirmacao_nao" name="confirmacao_valor" value="nao_obtido">
+              <label for="confirmacao_nao">Não foi possível obter</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="form-group">
+          <label>
+            O cliente demonstrou interesse em fazer novo pedido?
+            <span class="required">*</span>
+          </label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="pedido_fechado" name="interesse_pedido" value="fechado" required onchange="togglePedidoDetails(this.checked && this.value === 'fechado')">
+              <label for="pedido_fechado">Sim — pedido fechado</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="pedido_negociacao" name="interesse_pedido" value="negociacao" onchange="togglePedidoDetails(this.checked && this.value === 'negociacao')">
+              <label for="pedido_negociacao">Sim — em negociação</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="pedido_nao" name="interesse_pedido" value="nao" onchange="togglePedidoDetails(false)">
+              <label for="pedido_nao">Não</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conditional: Pedido Details -->
+        <div id="pedido-details" class="conditional-block">
+          <div class="form-group">
+            <label for="valor_pedido">
+              Qual o valor estimado do pedido? (R$)
+            </label>
+            <input type="number" id="valor_pedido" name="valor_pedido" min="0" step="0.01">
+          </div>
+
+          <div class="form-group">
+            <label for="data_fechamento">
+              Qual a previsão de fechamento?
+            </label>
+            <input type="date" id="data_fechamento" name="data_fechamento">
+          </div>
+
+          <div class="form-group">
+            <label>Quais produtos estão incluídos?</label>
+            <div class="checkbox-group">
+              <div class="checkbox-option">
+                <input type="checkbox" id="prod_maca" name="produtos_pedido" value="empada_maca">
+                <label for="prod_maca">Empada de Maçã PP (25 un)</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="prod_espinafre" name="produtos_pedido" value="empada_espinafre">
+                <label for="prod_espinafre">Empada de Espinafre PP (25 un)</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="prod_palmito" name="produtos_pedido" value="empada_palmito">
+                <label for="prod_palmito">Empada de Palmito PP (25 un)</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="prod_discos" name="produtos_pedido" value="discos_proteicos">
+                <label for="prod_discos">Discos Proteicos 30g (50 un)</label>
+              </div>
+              <div class="checkbox-option">
+                <input type="checkbox" id="prod_estrogonofe" name="produtos_pedido" value="estrogonofe_grao">
+                <label for="prod_estrogonofe">Estrogonofe de Grão de Bico (1 cx)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            Você recomenda repetir a degustação neste cliente?
+            <span class="required">*</span>
+          </label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="repetir_sim" name="repetir_degustacao" value="sim" required>
+              <label for="repetir_sim">Sim</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="repetir_talvez" name="repetir_degustacao" value="talvez">
+              <label for="repetir_talvez">Talvez</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="repetir_nao" name="repetir_degustacao" value="nao">
+              <label for="repetir_nao">Não</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Reposição de Estoque -->
+      <div class="card">
+        <h2>Reposição de Estoque</h2>
+        <p style="color: #666; margin-bottom: 20px;">
+          Qual a quantidade necessária para repor o estoque de cada produto após a degustação?
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Qtd. utilizada</th>
+                <th>Qtd. para repor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Empada de Maçã PP (ref: 25 un)</td>
+                <td><input type="number" id="p1_usado" name="p1_usado" min="0" step="1"></td>
+                <td><input type="number" id="p1_repor" name="p1_repor" min="0" step="1"></td>
+              </tr>
+              <tr>
+                <td>Empada de Espinafre PP (ref: 25 un)</td>
+                <td><input type="number" id="p2_usado" name="p2_usado" min="0" step="1"></td>
+                <td><input type="number" id="p2_repor" name="p2_repor" min="0" step="1"></td>
+              </tr>
+              <tr>
+                <td>Empada de Palmito PP (ref: 25 un)</td>
+                <td><input type="number" id="p3_usado" name="p3_usado" min="0" step="1"></td>
+                <td><input type="number" id="p3_repor" name="p3_repor" min="0" step="1"></td>
+              </tr>
+              <tr>
+                <td>Discos Proteicos 30g (ref: 50 un)</td>
+                <td><input type="number" id="p4_usado" name="p4_usado" min="0" step="1"></td>
+                <td><input type="number" id="p4_repor" name="p4_repor" min="0" step="1"></td>
+              </tr>
+              <tr>
+                <td>Estrogonofe de Grão de Bico (ref: 1 cx)</td>
+                <td><input type="number" id="p5_usado" name="p5_usado" min="0" step="1"></td>
+                <td><input type="number" id="p5_repor" name="p5_repor" min="0" step="1"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note">Use esses dados para atualizar o estoque no sistema Fácil</div>
+      </div>
+
+      <!-- Section 5: Observações Finais -->
+      <div class="card">
+        <h2>Observações Finais</h2>
+
+        <div class="form-group">
+          <label for="obs">
+            Há alguma observação adicional?
+          </label>
+          <textarea id="obs" name="obs" placeholder="Digite suas observações..."></textarea>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="reset" class="btn btn-secondary">Limpar formulário</button>
+        <button type="submit" class="btn btn-primary">Enviar formulário</button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    // Star Rating System
+    let starVal = 0;
+    const labels = ['', 'Muito ruim', 'Ruim', 'Regular', 'Bom', 'Muito bom'];
+
+    function setStar(v) {
+      starVal = v;
+      document.getElementById('avaliacao_recepcao').value = v;
+      document.getElementById('star-label').textContent = labels[v];
+      document.querySelectorAll('.star').forEach(s => {
+        s.classList.toggle('on', parseInt(s.dataset.v) <= v);
+      });
+    }
+
+    // Conditional Block Toggle
+    function togglePedidoDetails(show) {
+      const block = document.getElementById('pedido-details');
+      if (show) {
+        block.classList.add('show');
+        block.style.display = 'block';
+      } else {
+        block.classList.remove('show');
+        block.style.display = 'none';
+      }
+    }
+
+    // Initialize conditional blocks as hidden
+    document.addEventListener('DOMContentLoaded', function() {
+      togglePedidoDetails(false);
+
+      // URL Parameter Pre-filling
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has('vendedor')) {
+        document.getElementById('vendedor').value = decodeURIComponent(params.get('vendedor'));
+      }
+
+      if (params.has('cliente')) {
+        document.getElementById('cliente').value = decodeURIComponent(params.get('cliente'));
+      }
+
+      if (params.has('data')) {
+        document.getElementById('data_evento').value = params.get('data');
+      } else {
+        // Auto-fill today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('data_evento').value = today;
+      }
+
+      // Form submission handler (prevent default for demo)
+      document.getElementById('form3a').addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log('Form submitted:', new FormData(this));
+        alert('Formulário submetido com sucesso!');
+      });
+    });
+  </script>
+</body>
+</html>
