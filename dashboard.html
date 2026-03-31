@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supren Veg — Dashboard de Degustações</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        h1, h2, h3 { font-family: 'DM Serif Display', serif; }
+
+        /* Header */
+        header {
+            background-color: #1B5E20;
+            color: white;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .header-brand { font-family: 'DM Serif Display', serif; font-size: 1.6rem; }
+        .header-nav { display: flex; gap: 1rem; }
+
+        .btn-nav {
+            display: inline-block;
+            padding: 0.5rem 1.1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .btn-nav:hover { background: rgba(255,255,255,0.15); border-color: white; }
+        .btn-nav.active { background: white; color: #1B5E20; border-color: white; }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+            color: white;
+            padding: 2.5rem 2rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 { font-size: 2rem; font-weight: 400; margin-bottom: 0.4rem; }
+        .hero p { opacity: 0.9; font-size: 0.95rem; }
+
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            border-left: 4px solid;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .kpi-card .kpi-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.6;
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 2.4rem;
+            font-weight: 700;
+            line-height: 1;
+            font-family: 'DM Serif Display', serif;
+        }
+
+        .kpi-card .kpi-sub {
+            font-size: 0.82rem;
+            opacity: 0.55;
+        }
+
+        .kpi-total     { border-color: #1B5E20; }
+        .kpi-total .kpi-value { color: #1B5E20; }
+
+        .kpi-concluido { border-color: #4CAF50; }
+        .kpi-concluido .kpi-value { color: #388E3C; }
+
+        .kpi-confirmado { border-color: #2196F3; }
+        .kpi-confirmado .kpi-value { color: #1565C0; }
+
+        .kpi-agendado  { border-color: #FF9800; }
+        .kpi-agendado .kpi-value { color: #E65100; }
+
+        /* Charts grid */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .charts-grid-full {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+
+        .chart-card h3 {
+            font-size: 1rem;
+            color: #1B5E20;
+            margin-bottom: 1.2rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 260px;
+        }
+
+        .chart-wrapper-tall {
+            position: relative;
+            height: 320px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.82rem;
+            color: #999;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .charts-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-brand">Supren Veg</div>
+    <nav class="header-nav">
+        <a href="portal.html" class="btn-nav">Portal</a>
+        <a href="dashboard.html" class="btn-nav active">Dashboard</a>
+    </nav>
+</header>
+
+<div class="hero">
+    <h1>Dashboard de Degustações</h1>
+    <p id="heroSub">Carregando dados...</p>
+</div>
+
+<div class="container">
+
+    <!-- KPIs -->
+    <div class="kpi-grid" id="kpiGrid"></div>
+
+    <!-- Linha 1: Donut + Por Mês -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Distribuição por Status</h3>
+            <div class="chart-wrapper">
+                <canvas id="chartStatus"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>Degustações por Mês</h3>
+            <div class="chart-wrapper">
+                <canvas id="chartMes"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Linha 2: Por Degustador + Por Kit -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Atribuições por Degustador</h3>
+            <div class="chart-wrapper-tall">
+                <canvas id="chartDegustador"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>Uso por Kit</h3>
+            <div class="chart-wrapper">
+                <canvas id="chartKit"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    Supren Veg · Dashboard de Degustações · <span id="lastUpdate"></span>
+</footer>
+
+<script>
+// DEGUSTAÇÕES — atualizado automaticamente pelo sincronizar_portal.py
+// Última sincronização: 31/03/2026 às 08:21
+// NÃO EDITE MANUALMENTE ESTA SEÇÃO
+const DEGUSTACOES = [
+  {
+    "id": "322d10bf-fb1d-80cb-b7d7-fc949a0fe91e",
+    "cliente": "Dedé Doces e Queijos",
+    "data": "2026-03-21",
+    "data_br": "21/03/2026",
+    "horario": "8h às 12h",
+    "vendedor": "",
+    "degustador": "Ygor",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Concluído"
+  },
+  {
+    "id": "322d10bf-fb1d-8063-8535-c86d2af1b951",
+    "cliente": "VilaVeg (SVB)",
+    "data": "2026-03-22",
+    "data_br": "22/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Ana, André",
+    "responsavel": "",
+    "endereco": "Espaço Aroeira Lago Norte",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Concluído"
+  },
+  {
+    "id": "329d10bf-fb1d-806d-a4e4-d57c81c4bda2",
+    "cliente": "SHIZEN 407 SUL",
+    "data": "2026-03-28",
+    "data_br": "28/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Mônica",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "322d10bf-fb1d-8073-8c07-e584a28ef934",
+    "cliente": "Feira de Produtores Locais (Malunga)",
+    "data": "2026-03-28",
+    "data_br": "28/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Ester",
+    "responsavel": "",
+    "endereco": "Malunga Sudoeste",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "322d10bf-fb1d-8024-995a-d6738a5d87fe",
+    "cliente": "Comercial Reis",
+    "data": "2026-03-28",
+    "data_br": "28/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "Valéria",
+    "responsavel": "",
+    "endereco": "Comercial Reis Lago Norte",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Agendado"
+  },
+  {
+    "id": "330d10bf-fb1d-8066-974a-e6713ea395f3",
+    "cliente": "Hortifruti Bom Preço",
+    "data": "2026-03-31",
+    "data_br": "31/03/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Hortifruti Bom Preço QE 30",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "330d10bf-fb1d-80eb-ae25-e4c9795230d0",
+    "cliente": "Comercial Reis",
+    "data": "2026-04-04",
+    "data_br": "04/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "32dd10bf-fb1d-805a-949e-ed8ee7a766b1",
+    "cliente": "Temperos & Mel (9h às 13h)",
+    "data": "2026-04-04",
+    "data_br": "04/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Temperos & Mel JB",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "32fd10bf-fb1d-8045-8623-d128a184a839",
+    "cliente": "Supermercado Moreira",
+    "data": "2026-04-11",
+    "data_br": "11/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Rodovia DF-250 Km 2 - 5 Conj M Lote 13 Loja 01 E 02 Cond Novo Horizonte - Itapuã",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Agendado"
+  },
+  {
+    "id": "32fd10bf-fb1d-8086-8fd7-fd0a04d32510",
+    "cliente": "Pedacinho do céu",
+    "data": "2026-04-11",
+    "data_br": "11/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Quadra Cln 312 Bloco C Loja 27 - Asa Norte",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Agendado"
+  },
+  {
+    "id": "32dd10bf-fb1d-8046-afee-d2c4fe51355d",
+    "cliente": "Natufort",
+    "data": "2026-04-11",
+    "data_br": "11/04/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  },
+  {
+    "id": "322d10bf-fb1d-80a2-b1b5-ca4c0f92c384",
+    "cliente": "Feira SVB + UP",
+    "data": "2026-05-05",
+    "data_br": "05/05/2026",
+    "horario": "",
+    "vendedor": "",
+    "degustador": "",
+    "responsavel": "",
+    "endereco": "Câmara Legislativa Federal",
+    "kit": "Kit 01",
+    "contato": "",
+    "status": "Confirmado"
+  }
+];
+
+// ── Utilitários ────────────────────────────────────────────────────────────────
+
+function nomeMes(isoDate) {
+    if (!isoDate) return 'Sem data';
+    const d = new Date(isoDate + 'T12:00:00');
+    return d.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' })
+            .replace('.', '').replace(' de ', '/');
+}
+
+function count(arr, key, val) {
+    return arr.filter(d => d[key] === val).length;
+}
+
+// ── KPIs ──────────────────────────────────────────────────────────────────────
+
+function renderKPIs() {
+    const total      = DEGUSTACOES.length;
+    const concluido  = count(DEGUSTACOES, 'status', 'Concluído');
+    const confirmado = count(DEGUSTACOES, 'status', 'Confirmado');
+    const agendado   = count(DEGUSTACOES, 'status', 'Agendado');
+    const pctConc    = total ? Math.round(100 * concluido / total) : 0;
+
+    const kpis = [
+        { cls: 'kpi-total',      label: 'Total',       value: total,      sub: 'degustações no período' },
+        { cls: 'kpi-concluido',  label: 'Concluídas',  value: concluido,  sub: `${pctConc}% do total` },
+        { cls: 'kpi-confirmado', label: 'Confirmadas', value: confirmado, sub: 'prontas para acontecer' },
+        { cls: 'kpi-agendado',   label: 'Agendadas',   value: agendado,   sub: 'aguardando confirmação' },
+    ];
+
+    document.getElementById('kpiGrid').innerHTML = kpis.map(k => `
+        <div class="kpi-card ${k.cls}">
+            <div class="kpi-label">${k.label}</div>
+            <div class="kpi-value">${k.value}</div>
+            <div class="kpi-sub">${k.sub}</div>
+        </div>
+    `).join('');
+}
+
+// ── Gráfico: Status ────────────────────────────────────────────────────────────
+
+function renderChartStatus() {
+    const statusLabels = ['Concluído', 'Confirmado', 'Agendado'];
+    const statusColors = ['#4CAF50', '#2196F3', '#FF9800'];
+    const data = statusLabels.map(s => count(DEGUSTACOES, 'status', s));
+
+    new Chart(document.getElementById('chartStatus'), {
+        type: 'doughnut',
+        data: {
+            labels: statusLabels,
+            datasets: [{ data, backgroundColor: statusColors, borderWidth: 2, borderColor: '#fff' }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { padding: 16, font: { family: 'DM Sans' } } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(100 * ctx.raw / DEGUSTACOES.length)}%)`
+                    }
+                }
+            },
+            cutout: '62%'
+        }
+    });
+}
+
+// ── Gráfico: Por Mês ───────────────────────────────────────────────────────────
+
+function renderChartMes() {
+    const meses = {};
+    DEGUSTACOES.forEach(d => {
+        const m = nomeMes(d.data);
+        meses[m] = (meses[m] || 0) + 1;
+    });
+
+    const labels = Object.keys(meses);
+    const values = Object.values(meses);
+
+    new Chart(document.getElementById('chartMes'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Degustações',
+                data: values,
+                backgroundColor: '#2E7D32cc',
+                borderColor: '#1B5E20',
+                borderWidth: 2,
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'DM Sans' } }, grid: { color: '#f0f0f0' } },
+                x: { ticks: { font: { family: 'DM Sans' } }, grid: { display: false } }
+            }
+        }
+    });
+}
+
+// ── Gráfico: Por Degustador ────────────────────────────────────────────────────
+
+function renderChartDegustador() {
+    const contagem = {};
+    DEGUSTACOES.forEach(d => {
+        if (!d.degustador) return;
+        d.degustador.split(',').forEach(nome => {
+            const n = nome.trim();
+            if (n) contagem[n] = (contagem[n] || 0) + 1;
+        });
+    });
+
+    const sorted = Object.entries(contagem).sort((a, b) => b[1] - a[1]);
+    const labels = sorted.map(e => e[0]);
+    const values = sorted.map(e => e[1]);
+
+    const cores = ['#1B5E20','#2E7D32','#388E3C','#43A047','#4CAF50','#66BB6A','#81C784','#A5D6A7'];
+
+    new Chart(document.getElementById('chartDegustador'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Degustações',
+                data: values,
+                backgroundColor: labels.map((_, i) => cores[i % cores.length]),
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'DM Sans' } }, grid: { color: '#f0f0f0' } },
+                y: { ticks: { font: { family: 'DM Sans', size: 13 } }, grid: { display: false } }
+            }
+        }
+    });
+}
+
+// ── Gráfico: Por Kit ───────────────────────────────────────────────────────────
+
+function renderChartKit() {
+    const kits = {};
+    DEGUSTACOES.forEach(d => {
+        const k = d.kit || 'Não definido';
+        kits[k] = (kits[k] || 0) + 1;
+    });
+
+    const labels = Object.keys(kits).sort();
+    const values = labels.map(k => kits[k]);
+    const kitCores = ['#1565C0','#1976D2','#1E88E5','#42A5F5','#90CAF9'];
+
+    new Chart(document.getElementById('chartKit'), {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Usos',
+                data: values,
+                backgroundColor: labels.map((_, i) => kitCores[i % kitCores.length]),
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'DM Sans' } }, grid: { color: '#f0f0f0' } },
+                x: { ticks: { font: { family: 'DM Sans' } }, grid: { display: false } }
+            }
+        }
+    });
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', () => {
+    const total = DEGUSTACOES.length;
+    const datas = DEGUSTACOES.map(d => d.data).filter(Boolean).sort();
+    const inicio = datas[0] ? new Date(datas[0] + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+    const fim    = datas[datas.length - 1] ? new Date(datas[datas.length - 1] + 'T12:00:00').toLocaleDateString('pt-BR') : '—';
+
+    document.getElementById('heroSub').textContent =
+        total ? `${total} degustações · ${inicio} a ${fim}` : 'Nenhuma degustação carregada';
+
+    const syncMatch = document.body.innerHTML.match(/Última sincronização: ([^\n<]+)/);
+    if (syncMatch) document.getElementById('lastUpdate').textContent = 'Sincronizado em: ' + syncMatch[1].trim();
+
+    if (total === 0) return;
+
+    renderKPIs();
+    renderChartStatus();
+    renderChartMes();
+    renderChartDegustador();
+    renderChartKit();
+});
+</script>
+
+</body>
+</html>
