@@ -751,11 +751,8 @@
             // Monitor date changes for countdown
             document.getElementById('data_evento').addEventListener('change', atualizarCountdown);
 
-            document.getElementById('form-agendamento').addEventListener('submit', async function(e) {
+            document.getElementById('form-agendamento').addEventListener('submit', function(e) {
                 e.preventDefault();
-                await submitToApi(1, new FormData(this));
-                this.querySelector('[type="submit"]').textContent = 'Enviado!';
-                this.querySelector('[type="submit"]').disabled = true;
             });
         }
 
@@ -852,10 +849,13 @@
         }
 
         // Save and generate PDF
-        function salvarEGerar() {
+        async function salvarEGerar() {
             if (validarFormulario()) {
-                setPrintDate();
-                window.print();
+                const form = document.getElementById('form-agendamento');
+                await submitToApi(1, new FormData(form));
+                const btn = document.getElementById('btn-salvar');
+                btn.textContent = 'Enviado!';
+                btn.disabled = true;
             }
         }
 
