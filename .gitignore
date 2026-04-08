@@ -3,3 +3,5 @@ MEMORIA_PROJETO.md
 *.docx
 *.pdf
 *.py
+.env
+logs/
