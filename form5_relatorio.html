@@ -542,35 +542,35 @@
             }
         }
 
-        /* Print Styles */
-        @media print {
-            .top-bar {
-                position: static;
-            }
+        /* Success Banner */
+        .success-banner {
+            display: none;
+            background-color: var(--success);
+            color: white;
+            padding: 20px 28px;
+            border-radius: 10px;
+            margin: 24px auto;
+            max-width: 900px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
 
-            .form-section {
-                page-break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid var(--gray-200);
-            }
+        .success-banner.show {
+            display: block;
+        }
 
-            .btn,
-            .form-actions {
-                display: none;
-            }
-
-            body {
-                background-color: white;
-            }
-
-            .hero {
-                color: var(--teal-dark);
-                background: linear-gradient(135deg, var(--teal-light) 0%, rgba(224,242,241,0.5) 100%);
-            }
-
-            .roi-panel.show {
-                break-inside: avoid;
-            }
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 10px 24px;
+            background-color: white;
+            color: var(--success);
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -588,6 +588,13 @@
             <div class="meta-pill">Responsável da Degustação</div>
             <div class="meta-pill">Pós-evento · Consolidação final</div>
         </div>
+    </div>
+
+    <!-- Success Banner -->
+    <div id="successBanner" class="success-banner">
+        Relatório salvo com sucesso!
+        <br>
+        <a href="portal.html" class="btn-voltar">Voltar ao Portal</a>
     </div>
 
     <!-- Main Form -->
@@ -968,8 +975,8 @@
 
         <!-- Form Actions -->
         <div class="form-actions">
-            <button type="reset" class="btn btn-secondary">Limpar Formulário</button>
-            <button type="submit" class="btn btn-primary">Enviar Relatório</button>
+            <button type="reset" class="btn btn-secondary">Limpar</button>
+            <button type="submit" class="btn btn-primary">Salvar Relatório</button>
         </div>
     </form>
 
@@ -1004,6 +1011,9 @@
             return 'R$ ' + v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         }
 
+        // ID da degustação vindo da URL
+        let degustacaoId = null;
+
         // Initialize form with today's date
         function initializeForm() {
             const today = new Date().toISOString().split('T')[0];
@@ -1011,9 +1021,21 @@
             loadURLParameters();
         }
 
-        // Load URL parameters
+        // Load URL parameters e dados salvos
         function loadURLParameters() {
             const params = new URLSearchParams(window.location.search);
+            degustacaoId = params.get('id') || null;
+
+            // Se existe relatório salvo para este ID, carrega do localStorage
+            if (degustacaoId) {
+                const saved = localStorage.getItem('relatorio_' + degustacaoId);
+                if (saved) {
+                    loadSavedData(JSON.parse(saved));
+                    return;
+                }
+            }
+
+            // Sem dados salvos: preenche com parâmetros da URL
             const mapping = {
                 'responsavel': 'responsavel',
                 'cliente': 'cliente',
@@ -1029,6 +1051,83 @@
                     document.getElementById(fieldId).value = params.get(param);
                 }
             }
+        }
+
+        // Preenche o formulário com dados salvos
+        function loadSavedData(data) {
+            const textFields = ['responsavel', 'cliente', 'data_evento', 'endereco', 'vendedor',
+                                'degustador', 'mais_elogiado', 'menor_receptividade',
+                                'vendas_dia', 'custo_degu', 'valor_pedido', 'obs',
+                                'descricao_intercorrencias', 'abordadas', 'degustaram', 'duracao'];
+
+            for (const field of textFields) {
+                if (data[field] != null) {
+                    const el = document.getElementById(field);
+                    if (el) el.value = data[field];
+                }
+            }
+
+            // Selects
+            if (data.kit) document.getElementById('kit').value = data.kit;
+
+            // Porções
+            for (let i = 1; i <= 5; i++) {
+                if (data['p' + i + 's'] != null) document.getElementById('p' + i + 's').value = data['p' + i + 's'];
+                if (data['p' + i + 'd'] != null) document.getElementById('p' + i + 'd').value = data['p' + i + 'd'];
+            }
+
+            // Radio buttons
+            ['pedido_gerado', 'intercorrencias', 'recomenda_repetir'].forEach(name => {
+                if (data[name]) {
+                    const radio = document.querySelector(`input[name="${name}"][value="${data[name]}"]`);
+                    if (radio) radio.checked = true;
+                }
+            });
+
+            // Star rating
+            if (data.reacao_publica) {
+                document.getElementById('reacao_publica').value = data.reacao_publica;
+                const stars = document.querySelectorAll('#starRating .star');
+                stars.forEach((s, idx) => {
+                    s.classList.toggle('active', idx < data.reacao_publica);
+                });
+                document.getElementById('ratingLabel').textContent = RATING_LABELS[data.reacao_publica] || '';
+            }
+
+            // Atualiza campos condicionais
+            togglePedidoField();
+            toggleIntercorTextarea();
+            calc();
+            calcROI();
+        }
+
+        // Coleta todos os dados do formulário
+        function collectFormData() {
+            const data = {};
+
+            // Campos de texto/número
+            ['responsavel', 'cliente', 'data_evento', 'endereco', 'vendedor', 'degustador',
+             'kit', 'mais_elogiado', 'menor_receptividade', 'vendas_dia', 'custo_degu',
+             'valor_pedido', 'obs', 'descricao_intercorrencias', 'abordadas', 'degustaram', 'duracao',
+             'reacao_publica'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) data[id] = el.value;
+            });
+
+            // Porções
+            for (let i = 1; i <= 5; i++) {
+                data['p' + i + 's'] = document.getElementById('p' + i + 's')?.value || '';
+                data['p' + i + 'd'] = document.getElementById('p' + i + 'd')?.value || '';
+            }
+
+            // Radio buttons
+            ['pedido_gerado', 'intercorrencias', 'recomenda_repetir'].forEach(name => {
+                const checked = document.querySelector(`input[name="${name}"]:checked`);
+                if (checked) data[name] = checked.value;
+            });
+
+            data.savedAt = new Date().toISOString();
+            return data;
         }
 
         // Main Calculation Function
@@ -1178,11 +1277,23 @@
                 });
             });
 
-            // Form submission
+            // Form submission — salva no localStorage
             document.getElementById('reportForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-                alert('Relatório enviado com sucesso!');
-                // Here you would typically send the form data to a server
+
+                const data = collectFormData();
+
+                // Determina a chave de armazenamento
+                const key = degustacaoId
+                    ? 'relatorio_' + degustacaoId
+                    : 'relatorio_sem_id_' + (data.cliente || 'desconhecido') + '_' + (data.data_evento || '');
+
+                localStorage.setItem(key, JSON.stringify(data));
+
+                // Exibe banner de sucesso e oculta formulário
+                document.getElementById('reportForm').style.display = 'none';
+                document.getElementById('successBanner').classList.add('show');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
     </script>
