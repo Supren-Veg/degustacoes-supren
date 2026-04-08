@@ -975,7 +975,7 @@
 
         <!-- Form Actions -->
         <div class="form-actions">
-            <button type="reset" class="btn btn-secondary">Limpar</button>
+            <button type="reset" class="btn btn-secondary" id="btnLimpar">Limpar</button>
             <button type="submit" class="btn btn-primary">Salvar Relatório</button>
         </div>
     </form>
@@ -1030,7 +1030,11 @@
             if (degustacaoId) {
                 const saved = localStorage.getItem('relatorio_' + degustacaoId);
                 if (saved) {
-                    loadSavedData(JSON.parse(saved));
+                    try {
+                        loadSavedData(JSON.parse(saved));
+                    } catch (e) {
+                        localStorage.removeItem('relatorio_' + degustacaoId);
+                    }
                     return;
                 }
             }
@@ -1053,22 +1057,21 @@
             }
         }
 
+        // Campos de texto, número e select do formulário (fonte única de verdade)
+        const FORM_FIELDS = ['responsavel', 'cliente', 'data_evento', 'endereco', 'vendedor',
+                             'degustador', 'kit', 'mais_elogiado', 'menor_receptividade',
+                             'vendas_dia', 'custo_degu', 'valor_pedido', 'obs',
+                             'descricao_intercorrencias', 'abordadas', 'degustaram', 'duracao',
+                             'reacao_publica'];
+
         // Preenche o formulário com dados salvos
         function loadSavedData(data) {
-            const textFields = ['responsavel', 'cliente', 'data_evento', 'endereco', 'vendedor',
-                                'degustador', 'mais_elogiado', 'menor_receptividade',
-                                'vendas_dia', 'custo_degu', 'valor_pedido', 'obs',
-                                'descricao_intercorrencias', 'abordadas', 'degustaram', 'duracao'];
-
-            for (const field of textFields) {
+            for (const field of FORM_FIELDS) {
                 if (data[field] != null) {
                     const el = document.getElementById(field);
                     if (el) el.value = data[field];
                 }
             }
-
-            // Selects
-            if (data.kit) document.getElementById('kit').value = data.kit;
 
             // Porções
             for (let i = 1; i <= 5; i++) {
@@ -1086,12 +1089,13 @@
 
             // Star rating
             if (data.reacao_publica) {
-                document.getElementById('reacao_publica').value = data.reacao_publica;
+                const rating = Number(data.reacao_publica);
+                document.getElementById('reacao_publica').value = rating;
                 const stars = document.querySelectorAll('#starRating .star');
                 stars.forEach((s, idx) => {
-                    s.classList.toggle('active', idx < data.reacao_publica);
+                    s.classList.toggle('active', idx < rating);
                 });
-                document.getElementById('ratingLabel').textContent = RATING_LABELS[data.reacao_publica] || '';
+                document.getElementById('ratingLabel').textContent = RATING_LABELS[rating] || '';
             }
 
             // Atualiza campos condicionais
@@ -1105,11 +1109,8 @@
         function collectFormData() {
             const data = {};
 
-            // Campos de texto/número
-            ['responsavel', 'cliente', 'data_evento', 'endereco', 'vendedor', 'degustador',
-             'kit', 'mais_elogiado', 'menor_receptividade', 'vendas_dia', 'custo_degu',
-             'valor_pedido', 'obs', 'descricao_intercorrencias', 'abordadas', 'degustaram', 'duracao',
-             'reacao_publica'].forEach(id => {
+            // Campos de texto, número e select
+            FORM_FIELDS.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) data[id] = el.value;
             });
@@ -1275,6 +1276,13 @@
                 stars.forEach((s, idx) => {
                     s.style.color = idx < activeCount ? '#FFB81C' : 'var(--gray-200)';
                 });
+            });
+
+            // Botão Limpar — apaga também o localStorage
+            document.getElementById('btnLimpar').addEventListener('click', function() {
+                if (degustacaoId) {
+                    localStorage.removeItem('relatorio_' + degustacaoId);
+                }
             });
 
             // Form submission — salva no localStorage
