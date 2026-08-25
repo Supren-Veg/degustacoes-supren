@@ -1,0 +1,10 @@
+sincronizar_portal.py
+MEMORIA_PROJETO.md
+*.docx
+*.pdf
+*.py
+!tests/*.py
+.env
+logs/
+__pycache__/
+api_config.js
